@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin Dashboard - Samarpan</title>
+    <style>
+        
+    </style>
+</head>
+<body>
+    <div id="header"></div>
+
+    <main class="admin-main container">
+        <section id="admin-dashboard" class="card">
+            <div class="dashboard-header">
+                <h2>Admin Dashboard</h2>
+                <button id="logoutBtn" class="btn-ghost">Logout</button>
+            </div>
+
+            <!-- Add / Edit Form -->
+            <div class="form-panel">
+                <h3 id="formTitle">Add Event</h3>
+                <div class="form-row">
+                    <label for="evTitle">Title</label>
+                    <input id="evTitle" type="text" />
+                </div>
+                <div class="form-row">
+                    <label for="evDate">Date</label>
+                    <input id="evDate" type="date" />
+                </div>
+                <div class="form-row">
+                    <label for="evDesc">Short Description</label>
+                    <textarea id="evDesc" rows="3"></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button id="saveBtn" class="btn-primary">Save</button>
+                    <button id="cancelEditBtn" class="btn-ghost" style="display:none;">Cancel</button>
+                </div>
+
+                <div id="formMessage" class="form-help" aria-live="polite"></div>
+            </div>
+
+            <!-- Event list -->
+            <div class="list-panel">
+                <h3>Events</h3>
+                <div id="eventsList" class="events-list"></div>
+                <div id="emptyMessage" class="form-help">No events yet. Add one above.</div>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer"></div>
+
+    <script src="jquery-3.7.1.min.js"></script>
+    <script>
+        $(function(){
+            $("#header").load("header.html");
+            $("#footer").load("footer.html");
+        });
+    </script>
+</body>
+</html>

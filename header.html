@@ -43,7 +43,8 @@
         body > * {
             position: relative;
             z-index: 1;
-            }    
+            }
+            
         #navbar {
             position: sticky;
             top: 0;
@@ -55,19 +56,25 @@
             max-width: 1200px;
             margin: 0 auto;
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;
             align-items: center;
+            gap: 10rem;
+            padding-top: 0.3rem;
+            padding-bottom: 0.3rem;
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.8em;
+            margin-left: -100px;
         }
 
         .logo-text {
             display: flex;
             flex-direction: column;
+            justify-content: center;
+            line-height: 1.15;
         }
 
         .logo-main {
@@ -75,6 +82,7 @@
             font-weight: 700;
             color: #dc5424;
             letter-spacing: -0.5px;
+            margin-bottom: 2px;
         }
 
         .logo-gujarati {
@@ -82,6 +90,7 @@
             color: #dc5424;
             font-weight: 600;
             letter-spacing: 0.5px;
+            margin-bottom: 8px;
         }
 
         .logo-sub {
@@ -93,6 +102,8 @@
         }
 
         .logo-icon {
+            height: 80px;
+            display: block;
             font-size: 2.5rem;
             animation: float 3s ease-in-out infinite;
         }
@@ -105,7 +116,9 @@
         nav ul {
             display: flex;
             list-style: none;
-            gap: 2.5rem;
+            gap: 2rem;
+            margin-left:auto;
+            align-items: center;
         }
 
         nav a {
@@ -155,11 +168,10 @@
         .admin-link::after {
             display: none;
         }
-
     </style>
     </head>
     <body>
-        <nav class="samarpan-nav">
+        <nav class="navnar">
         <div class="container">
             <div class="logo">
                 <img src="logo_samarpan.jpg" class="samarpan-logo" alt="Samarpan Logo" height="100">
@@ -185,5 +197,9 @@
             </ul>
         </div>
         </nav>
+
+        <script>
+
+        </script>
     </body>
 </html>

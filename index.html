@@ -322,6 +322,78 @@
             line-height: 1.6;
         }
 
+        /* Committee Section */
+        .committee {
+            padding: 50px 20px;
+            background: #fff7ef;
+            text-align: center;
+            border-top: 4px dashed rgba(220,84,36,0.15);
+        }
+
+        .committee-title {
+            font-family: "Shrikhand", Arial;
+            color: #dc5424;
+            font-size: 2.3rem;
+            margin-bottom: 25px;
+        }
+
+        .committee-grid {
+            display: flex;          
+            gap: 25px;
+            overflow-x: hidden;
+            scroll-behavior: nowrap;
+            padding: 10px;
+            white-space: nowrap;
+        }
+
+        .committee-grid::-webkit-scrollbar {
+            display: none;
+        }
+
+        .committee-member {
+            flex: 0 0 260px;        
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 20px;
+            border: 2px solid #ffdd55;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .committee-member:hover {
+            transform: translateY(-8px);
+            border-color: #dc5424;
+            box-shadow: 0 12px 26px rgba(220,84,36,0.22);
+        }
+
+        .member-photo {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 12px;
+            background: #a12424;
+            border-radius: 50%;
+            border: 3px solid #ffdd55;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .member-name {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #a12424;
+        }
+
+        .member-role {
+            font-size: 0.95rem;
+            color: #dc5424;
+            font-weight: 600;
+            margin-top: 4px;
+        }
         /* Events Section */
         .events {
             padding: 5rem 2rem;
@@ -452,28 +524,6 @@
 <body>
     <!-- Navigation -->
      <div id="header"></div>
-    <!--<nav id="navbar">
-        <div class="container">
-            <div class="logo">
-                <div class="logo-icon"><img src="logo_samarpan.jpg" height="100"></div>
-                <div class="logo-text">
-                    <div class="logo-main">Samarpan</div>
-                    <div class="logo-gujarati">સમર્પણ</div>
-                    <div class="logo-sub">Gujarati Cultural Association Kuwait</div>
-                </div>
-            </div>
-            <ul>
-                <li></li>
-                <li><a href="index.html">Home ઘર</a></li>
-                <li><a href="about.html">About  પરિચય</a></li>
-                <li><a href="events.html">Events  કાર્યક્રમો</a></li>
-                <li><a href="gallery.html">Gallery  ગેલેરી</a></li>
-                <li><a href="news.html">News સમાચાર</a></li>
-                <li><a href="contact.html">Contact સંપર્ક</a></li>
-                <li><a href="admin-login.html" class="admin-link">Admin</a></li>
-            </ul>
-        </div>
-    </nav>-->
 
     <!-- Hero Section -->
     <section class="hero" id="home">
@@ -551,6 +601,50 @@
         </div>
     </section>
 
+    <section class="committee">
+
+        <h2 class="committee-title">Meet the Committee</h2>
+
+        <div class="committee-grid">
+           
+            <div class="committee-member" role="list">
+                <div class="member-photo">👤</div>
+                <h3 class="member-name">Mr. Hiteshkumar S. Patel</h3>
+                <div class="member-role">President</div>
+            </div>
+            
+            <div class="committee-member" role="list">
+                <div class="member-photo">👤</div>
+                <h3 class="member-name">Ms. Siddharth Mod</h3>
+                <div class="member-role">General Secretary</div>
+            </div>
+           
+            <div class="committee-member" role="list">
+                <div class="member-photo">👤</div>
+                <h3 class="member-name">Mr. Alpitbhai Patel</h3>
+                <div class="member-role">Treasurer</div>
+            </div>
+            
+            <div class="committee-member" role="list">
+                <div class="member-photo">👤</div>
+                <h3 class="member-name">Mr. Dipakbhai Parmar </h3>
+                <div class="member-role">Treasurer</div>
+            </div>
+
+            <div class="committee-member" role="list">
+                <div class="member-photo" aria-hidden="true">👤</div>
+                <h3 class="member-name">Vishal R. Patel</h3>
+                <div class="member-role">Coordinator</div>
+            </div>
+
+            <div class="committee-member" role="list">
+                <div class="member-photo" aria-hidden="true">👤</div>
+                <h3 class="member-name">Ketanbhai Patel</h3>
+                <div class="member-role">Coordinator</div>
+            </div>
+        </div>
+    </section>
+
     <!-- Events Section -->
     <section class="events" id="events">
         <div class="container">
@@ -591,46 +685,53 @@
 
     <!-- Footer -->
     <div id="footer"></div>
-    <!--<footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>Samarpan</h3>
-                    <p>A cultural beacon serving the Gujarati community in Kuwait with pride, heritage, and unity.</p>
-                    <div class="social-links">
-                        <a href="#">f</a>
-                        <a href="#">𝕏</a>
-                        <a href="#">in</a>
-                    </div>
-                </div>
 
-                <div class="footer-section">
-                    <h3>Quick Links</h3>
-                    <a href="index.html">Home</a>
-                    <a href="about.html">About</a>
-                    <a href="events.html">Events</a>
-                    <a href="gallery.html">Gallery</a>
-                    <a href="news.html">News</a>
-                </div>
-
-                <div class="footer-section">
-                    <h3>Contact</h3>
-                    <a href="mailto:info@samarpan.kw">info@samarpan.kw</a>
-                    <p>+965 XXXX XXXX</p>
-                    <p>Kuwait</p>
-                </div>
-
-            <div class="footer-bottom">
-                <p>© 2025 Samarpan - Gujarati Cultural Association, Kuwait | જય ગુજરાત | Under the Patronage of Indian Embassy</p>
-            </div>
-        </div>
-    </footer>-->
    <script src="jquery-3.7.1.min.js"></script>
     <script>
     $(document).ready(function(){
         $("#header").load("header.html");
         $("#footer").load("footer.html");
     });
-    </script>
+
+    var slider = document.querySelector(".committee-grid");
+    var svalue = 0;
+    var delay = 2000;
+    var slidinginterval;
+
+
+    slider.innerHTML += slider.innerHTML;
+
+    setTimeout(function () {
+
+        slidinginterval = setInterval(function () {
+
+            svalue += 1;
+            slider.scrollLeft = svalue;
+            if (svalue >= slider.scrollWidth / 2) {
+                svalue = 0;
+                slider.scrollLeft = 0; 
+            }
+        }, 25);
+
+    }, delay);
+
+    slider.addEventListener("mouseenter", function(){
+        clearInterval(slidinginterval);
+    }); 
+
+    slider.addEventListener("mouseleave", function(){
+        slidinginterval = setInterval(function () {
+
+            svalue += 1;
+            slider.scrollLeft = svalue;
+            if (svalue >= slider.scrollWidth / 2) {
+                svalue = 0;
+                slider.scrollLeft = 0; 
+            }
+        }, 0);
+    });
+
+    
+</script>
 </body>
 </html>

@@ -216,34 +216,6 @@
             display: none;
         }
 
-        /* Map Section */
-        .map-section {
-            padding: 5rem 2rem;
-            background: linear-gradient(135deg, rgba(220, 84, 36, 0.05), rgba(244, 164, 96, 0.05));
-            border-bottom: 4px dashed #f4a460;
-        }
-
-        .map-section h2 {
-            font-size: 2rem;
-            color: #dc5424;
-            margin-bottom: 2rem;
-            text-align: center;
-            font-weight: 600;
-        }
-
-        .map-placeholder {
-            width: 100%;
-            height: 400px;
-            background: linear-gradient(135deg, #dc5424, #f4a460);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 4rem;
-            border: 3px solid #dc5424;
-        }
-
         @media (max-width: 768px) {
         nav ul {
             gap: 1.2rem;
@@ -272,28 +244,6 @@
 <body>
     <!-- Navigation -->
      <div id="header"></div>
-     <!--
-    <nav id="navbar">
-        <div class="container">
-            <div class="logo">
-                <div class="logo-icon">🪟</div>
-                <div class="logo-text">
-                    <div class="logo-main">Samarpan</div>
-                    <div class="logo-gujarati">સમર્પણ</div>
-                    <div class="logo-sub">Gujarati Cultural Association Kuwait</div>
-                </div>
-            </div>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="events.html">Events</a></li>
-                <li><a href="gallery.html">Gallery</a></li>
-                <li><a href="news.html">News</a></li>
-                <li><a href="contact.html" class="active">Contact</a></li>
-                <li><a href="admin-login.html" class="admin-link">Admin</a></li>
-            </ul>
-        </div>
-    </nav>-->
 
     <!-- Hero -->
     <section class="hero">
@@ -329,12 +279,6 @@
                         <a href="mailto:events@samarpan.kw">events@samarpan.kw</a></p>
                     </div>
 
-                    <div class="contact-item">
-                        <h3>⏰ Office Hours</h3>
-                        <p>Sunday - Thursday: 9:00 AM - 5:00 PM<br>
-                        Friday - Saturday: Closed</p>
-                    </div>
-
                     <div class="social-media">
                         <a href="#" class="social-btn">f</a>
                         <a href="#" class="social-btn">𝕏</a>
@@ -347,7 +291,7 @@
                 <div class="contact-form">
                     <h2>Send Us a Message</h2>
                     
-                    <div class="success-message" id="successMessage">
+                    <div class="success-message" id="success_message">
                         Thank you! Your message has been sent successfully. We'll get back to you soon.
                     </div>
 
@@ -385,90 +329,89 @@
                             <textarea id="message" placeholder="Write your message here..." required></textarea>
                         </div>
 
-                        <button type="submit" class="btn-submit">Send Message</button>
+                        <button type="submit" id="sendBtn" class="btn-submit">Send Message</button>
                     </form>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Map Section -->
-    <section class="map-section">
-        <div class="container">
-            <h2>Find Us</h2>
-            <div class="map-placeholder">
-                🗺️
-            </div>
-        </div>
-    </section>
-
     <!-- Footer -->
-     <div id="footer"></div>
-     <!--
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>Samarpan</h3>
-                    <p>A cultural beacon serving the Gujarati community in Kuwait with pride, heritage, and unity.</p>
-                    <div class="social-links">
-                        <a href="#">f</a>
-                        <a href="#">𝕏</a>
-                        <a href="#">in</a>
-                    </div>
-                </div>
-
-                <div class="footer-section">
-                    <h3>Quick Links</h3>
-                    <a href="index.html">Home</a>
-                    <a href="about.html">About</a>
-                    <a href="events.html">Events</a>
-                    <a href="gallery.html">Gallery</a>
-                    <a href="news.html">News</a>
-                </div>
-
-                <div class="footer-section">
-                    <h3>Contact</h3>
-                    <a href="mailto:info@samarpan.kw">info@samarpan.kw</a>
-                    <p>+965 XXXX XXXX</p>
-                    <p>Kuwait</p>
-                </div>
-
-                <div class="footer-section">
-                    <h3>Legal</h3>
-                    <a href="#">Privacy Policy</a>
-                    <a href="#">Terms of Service</a>
-                    <a href="#">Code of Conduct</a>
-                </div>
-            </div>
-
-            <div class="footer-bottom">
-                <p>© 2025 Samarpan - Gujarati Cultural Association, Kuwait | જય ગુજરાત | Under the Patronage of Indian Embassy</p>
-            </div>
-        </div>
-    </footer>-->
+    <div id="footer"></div>
 
     <script src="jquery-3.7.1.min.js"></script>
     <script>
        const contactForm = document.getElementById('contactForm');
-        const successMessage = document.getElementById('successMessage');
+        const success_message = document.getElementById('success_message');
 
         contactForm.addEventListener('submit', function(e) {
         e.preventDefault();
-                    
+        document.getElementById('sendBtn').addEventListener('click', function() {         
+            var name = document.getElementbyId('name').value;
+            var email = document.getElementbyId('email').value;
+            var phone = document.getElementbyId('phone').value;
+            var subject = document.getElementbyId('subject').value;
+            var message = document.getElementbyId('message').value;
+            var error_message = document.getElementById('error');
+            var success_message = document.getElementById('success_message');
+            document.getElementById('name').style.borderColor = "";
+            document.getElementById('email').style.borderColor = "";
+            document.getElementById('phone').style.borderColor = "";
+            document.getElementById('subject').style.borderColor = "";
+            document.getElementById('message').style.borderColor = "";
+
+                if(name === ""){
+                    error_message.innerHTML = "Please enter your name.";
+                    document.getElementById('name').style.borderColor = "red";
+                    return;
+                }
+                
+                if(email === ""){
+                    error_message.innerHTML = "Please enter your email.";
+                    document.getElementById('email').style.borderColor = "red";
+                    return;
+                }
+               
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                    error_message.innerHTML = "Please enter a valid email address.";
+                    document.getElementById('email').style.borderColor = "red";
+                    return;
+                }
+                
+                if(subject === ""){
+                    error_message.innerHTML = "Please select a subject.";
+                    document.getElementById('subject').style.borderColor = "red";
+                    return;
+                }
+                
+                if(message === ""){
+                    error_message.innerHTML = "Please enter your message.";
+                    document.getElementById('message').style.borderColor = "red";
+                    return;
+                }
+                
+                if (phone === "" || !/^\+965\s?\d{4}\s?\d{4}$/.test(phone)) {
+                    error_message.innerHTML = "Please enter your phone number.";
+                    document.getElementById('phone').style.borderColor = "red";
+                    return;
+                }
+                
+            success_message.innerHTML = "Your Message has been sent successfully!";
+            });
+
         // Show success message
-        successMessage.style.display = 'block';
+        success_message.style.display = 'block';
                     
         // Reset form
         contactForm.reset();
                     
         // Hide success message after 5 seconds
         setTimeout(() => {
-            successMessage.style.display = 'none';
+            success_message.style.display = 'none';
                     }, 5000);
                     
                     // Scroll to success message
-                    successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    success_message.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 });
 
         var lastScrollTop = 0;

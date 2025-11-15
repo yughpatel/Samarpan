@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News & Blog - Samarpan</title>
+    <style>     
+       * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+       body {
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+            color: #2c2c2c;
+            background: linear-gradient(135deg, #fef9f3 0%, #fff5e6 100%);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle, rgba(220, 84, 36, 0.02) 1px, transparent 1px);
+            background-size: 25px 25px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 5rem 2rem 4rem;
+            text-align: center;
+            background: linear-gradient(to bottom, rgba(255, 248, 240, 0.6), rgba(255, 240, 224, 0.7));
+            border-bottom: 4px dashed #f4a460;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            color: #dc5424;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* News Grid */
+        .news-section {
+            padding: 5rem 2rem;
+            background: white;
+            border-bottom: 4px dashed #dc5424;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .news-card {
+            background: white;
+            border: 2px solid #f4a460;
+            overflow: hidden;
+            transition: all 0.4s;
+        }
+
+        .news-card:hover {
+            transform: translateY(-8px);
+            border-color: #dc5424;
+            box-shadow: 0 15px 40px rgba(220, 84, 36, 0.2);
+        }
+
+        .news-image {
+            height: 220px;
+            background: linear-gradient(135deg, #dc5424, #f4a460);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: white;
+        }
+
+        .news-content {
+            padding: 2rem;
+        }
+
+        .news-meta {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .news-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .news-category {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: rgba(220, 84, 36, 0.1);
+            color: #dc5424;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .news-card h3 {
+            font-size: 1.4rem;
+            color: #dc5424;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .news-card p {
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        .btn-read {
+            background: linear-gradient(135deg, #dc5424, #f4a460);
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 0;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: bold;
+            transition: all 0.4s;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        .btn-read:hover {
+            transform: translateX(4px);
+            box-shadow: 0 8px 20px rgba(220, 84, 36, 0.3);
+        }
+
+        /* Featured Post */
+        .featured-post {
+            padding: 5rem 2rem;
+            background: linear-gradient(135deg, rgba(220, 84, 36, 0.05), rgba(244, 164, 96, 0.05));
+            border-bottom: 4px dashed #f4a460;
+        }
+
+        .featured-card {
+            background: white;
+            border: 3px solid #dc5424;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            overflow: hidden;
+        }
+
+        .featured-image {
+            height: 100%;
+            min-height: 400px;
+            background: linear-gradient(135deg, #dc5424, #f4a460);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6rem;
+            color: white;
+        }
+
+        .featured-content {
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .featured-badge {
+            display: inline-block;
+            padding: 0.5rem 1.2rem;
+            background: #dc5424;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            align-self: flex-start;
+        }
+
+        .featured-content h2 {
+            font-size: 2rem;
+            color: #dc5424;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .featured-content p {
+            color: #666;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                gap: 1.2rem;
+                font-size: 0.75rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .featured-card {
+                grid-template-columns: 1fr;
+            }
+
+            .featured-image {
+                min-height: 250px;
+            }
+        }
+
+
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <div id="header"></div>
+    <!--<nav id="navbar">
+        <div class="container">
+            <div class="logo">
+                <div class="logo-icon">🪟</div>
+                <div class="logo-text">
+                    <div class="logo-main">Samarpan</div>
+                    <div class="logo-gujarati">સમર્પણ</div>
+                    <div class="logo-sub">Gujarati Cultural Association Kuwait</div>
+                </div>
+            </div>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="events.html">Events</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="news.html" class="active">News</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="admin-login.html" class="admin-link">Admin</a></li>
+            </ul>
+        </div>
+    </nav>-->
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <h1>News & Updates</h1>
+            <p>Stay updated with the latest happenings in our community</p>
+        </div>
+    </section>
+
+    <!-- Featured Post -->
+    <section class="featured-post">
+        <div class="container">
+            <div class="featured-card">
+                <div class="featured-image">🎊</div>
+                <div class="featured-content">
+                    <span class="featured-badge">Featured Story</span>
+                    <h2>Diwali 2025: Our Biggest Celebration Yet</h2>
+                    <p>This year's Diwali celebration was attended by over 800 community members, making it the largest gathering in Samarpan's history. With traditional rangoli competitions, cultural performances, and authentic Gujarati cuisine, the event brought joy and unity to all.</p>
+                    <a href="#" class="btn-read">Read Full Story →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- News Grid -->
+    <section class="news-section">
+        <div class="container">
+            <div class="news-grid">
+                <div class="news-card">
+                    <div class="news-image">📚</div>
+                    <div class="news-content">
+                        <span class="news-category">Education</span>
+                        <div class="news-meta">
+                            <span>📅 October 15, 2025</span>
+                            <span>✍️ Admin</span>
+                        </div>
+                        <h3>New Gujarati Language Classes Launch</h3>
+                        <p>We're excited to announce the launch of our new Gujarati language program for children. Classes will be held every Saturday with experienced teachers.</p>
+                        <a href="#" class="btn-read">Read More →</a>
+                    </div>
+                </div>
+
+                <div class="news-card">
+                    <div class="news-image">🤝</div>
+                    <div class="news-content">
+                        <span class="news-category">Community</span>
+                        <div class="news-meta">
+                            <span>📅 October 10, 2025</span>
+                            <span>✍️ Admin</span>
+                        </div>
+                        <h3>Community Service Initiative Success</h3>
+                        <p>Over 200 volunteers participated in our recent community service day, distributing food and essentials to those in need across Kuwait.</p>
+                        <a href="#" class="btn-read">Read More →</a>
+                    </div>
+                </div>
+
+                <div class="news-card">
+                    <div class="news-image">🎭</div>
+                    <div class="news-content">
+                        <span class="news-category">Cultural</span>
+                        <div class="news-meta">
+                            <span>📅 October 5, 2025</span>
+                            <span>✍️ Admin</span>
+                        </div>
+                        <h3>Folk Music Concert Announced</h3>
+                        <p>Don't miss our upcoming folk music concert featuring renowned artists from Gujarat. Book your seats now for this special cultural evening.</p>
+                        <a href="#" class="btn-read">Read More →</a>
+                    </div>
+                </div>
+
+                <div class="news-card">
+                    <div class="news-image">👨‍👩‍👧‍👦</div>
+                    <div class="news-content">
+                        <span class="news-category">Announcement</span>
+                        <div class="news-meta">
+                            <span>📅 September 28, 2025</span>
+                            <span>✍️ Admin</span>
+                        </div>
+                        <h3>Membership Drive 2026</h3>
+                        <p>Join our growing family! Special membership benefits and discounted rates available for new members joining before December 2025.</p>
+                        <a href="#" class="btn-read">Read More →</a>
+                    </div>
+                </div>
+
+                <div class="news-card">
+                    <div class="news-image">🍛</div>
+                    <div class="news-content">
+                        <span class="news-category">Events</span>
+                        <div class="news-meta">
+                            <span>📅 September 20, 2025</span>
+                            <span>✍️ Admin</span>
+                        </div>
+                        <h3>Food Festival Highlights</h3>
+                        <p>Relive the magic of our recent food festival with stunning photos, recipes, and memorable moments from the celebration of Gujarati cuisine.</p>
+                        <a href="#" class="btn-read">Read More →</a>
+                    </div>
+                </div>
+
+                <div class="news-card">
+                    <div class="news-image">🏆</div>
+                    <div class="news-content">
+                        <span class="news-category">Achievement</span>
+                        <div class="news-meta">
+                            <span>📅 September 10, 2025</span>
+                            <span>✍️ Admin</span>
+                        </div>
+                        <h3>Samarpan Wins Community Award</h3>
+                        <p>We're honored to receive the "Best Cultural Association" award from the Indian Embassy for our outstanding contribution to preserving heritage.</p>
+                        <a href="#" class="btn-read">Read More →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <div id="footer"></div>"
+    <!--<footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Samarpan</h3>
+                    <p>A cultural beacon serving the Gujarati community in Kuwait with pride, heritage, and unity.</p>
+                    <div class="social-links">
+                        <a href="#">f</a>
+                        <a href="#">𝕏</a>
+                        <a href="#">in</a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a href="events.html">Events</a>
+                    <a href="gallery.html">Gallery</a>
+                    <a href="news.html">News</a>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <a href="mailto:info@samarpan.kw">info@samarpan.kw</a>
+                    <p>+965 XXXX XXXX</p>
+                    <p>Kuwait</p>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Legal</h3>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Code of Conduct</a>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2025 Samarpan - Gujarati Cultural Association, Kuwait | જય ગુજરાત | Under the Patronage of Indian Embassy</p>
+            </div>
+        </div>
+    </footer>-->
+
+   <script src="jquery-3.7.1.min.js"></script>
+    <script>
+        var lastScrollTop = 0;
+        var nav = document.getElementById("navbar");
+
+        window.onscroll = function () {
+            var currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+            if (currentScroll > lastScrollTop) {
+                /* Scrolling Down → Hide Navbar */
+                nav.style.top = "-120px";
+            } else {
+                /* Scrolling Up → Show Navbar */
+                nav.style.top = "0";
+            }
+
+            lastScrollTop = currentScroll;
+        };
+
+        $(function() {
+            $("#header").load("header.html");
+            $("#footer").load("footer.html");
+        });
+    </script>
+
+</body>
+</html>

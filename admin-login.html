@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Samarpan</title>
+    
+    <style>
+        /* --- 1. Base and Re-used Styles --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+            color: #2c2c2c;
+            background: linear-gradient(135deg, #fef9f3 0%, #fff5e6 100%);
+            position: relative;
+            overflow-x: hidden;
+            /* Ensure footer is at the bottom */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle, rgba(220, 84, 36, 0.02) 1px, transparent 1px);
+            background-size: 25px 25px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* --- 2. New Login Page Styles --- */
+        .login-section {
+            padding: 5rem 2rem;
+            background: white;
+            flex-grow: 1; /* Makes this section fill remaining space */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 450px;
+            padding: 3rem;
+            background: #ffffff;
+            border: 3px solid #f4a460;
+            box-shadow: 0 10px 30px rgba(220, 84, 36, 0.15); /* */
+        }
+        
+        .login-container h1 {
+            color: #dc5424;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.6rem;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #f4a460;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-family: Arial, sans-serif;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #dc5424;
+            box-shadow: 0 0 0 3px rgba(220, 84, 36, 0.1);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 1.1rem;
+            background: linear-gradient(135deg, #dc5424, #f4a460);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(220, 84, 36, 0.3);
+        }
+
+        #error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #c62828;
+            display: none; /* Hidden by default */
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+     <div id="header"></div>
+     <!--
+    <nav id="navbar">
+        <div class="container">
+            <div class="logo">
+                <div class="logo-icon">🪟</div>
+                <div class="logo-text">
+                    <div class="logo-main">Samarpan</div>
+                    <div class="logo-gujarati">સમર્પણ</div>
+                    <div class="logo-sub">Gujarati Cultural Association Kuwait</div>
+                </div>
+            </div>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="events.html">Events</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="news.html">News</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="admin-login.html" class="admin-link active">Admin</a></li>
+            </ul>
+        </div>
+    </nav>-->
+
+    <section class="login-section">
+        <div class="login-container">
+            <h1>Admin Login</h1>
+            
+            <div id="error-message"></div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="btn-login">Login</button>
+            </form>
+        </div>
+    </section>
+    <!--Footer-->
+    <div id="footer"></div>
+    <!--
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Samarpan</h3>
+                    <p>A cultural beacon serving the Gujarati community in Kuwait with pride, heritage, and unity.</p>
+                    <div class="social-links">
+                        <a href="#">f</a>
+                        <a href="#">𝕏</a>
+                        <a href="#">in</a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a href="events.html">Events</a>
+                    <a href="gallery.html">Gallery</a>
+                    <a href="news.html">News</a>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <a href="mailto:info@samarpan.kw">info@samarpan.kw</a>
+                    <p>+965 XXXX XXXX</p>
+                    <p>Kuwait</p>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Legal</h3>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Code of Conduct</a>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2025 Samarpan - Gujarati Cultural Association, Kuwait | જય ગુજરાત | Under the Patronage of Indian Embassy</p>
+            </div>
+        </div>
+    </footer>-->
+
+    <script>
+        var lastScrollTop = 0;
+        var nav = document.getElementById("navbar");
+
+        window.onscroll = function () {
+            var currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+            if (currentScroll > lastScrollTop) {
+                /* Scrolling Down → Hide Navbar */
+                nav.style.top = "-120px";
+            } else {
+                /* Scrolling Up → Show Navbar */
+                nav.style.top = "0";
+            }
+            
+            if (currentScroll < 0) {
+                lastScrollTop = 0;
+            } else {
+                lastScrollTop = currentScroll;
+            }
+        };
+        /*
+This script handles the admin login page (admin-login.html).
+It uses only functions available in the provided PDF documents.
+*/
+
+// Wait for the form to be ready, then attach the event listener
+// We find the form using document.getElementById
+//
+var loginForm = document.getElementById("loginForm");
+
+if (loginForm) {
+    // We attach an event listener for the 'submit' event
+    //
+    //
+    loginForm.addEventListener("submit", function(e) {
+        
+        // Prevent the form from actually submitting and reloading the page
+        //
+        e.preventDefault(); 
+
+        // Get the values from the input fields
+        //
+        var usernameInput = document.getElementById("username");
+        var passwordInput = document.getElementById("password");
+        var errorMessage = document.getElementById("error-message");
+
+        var username = usernameInput.value;
+        var password = passwordInput.value;
+
+        // Check the username and password
+        //
+        if (username === "admin" && password === "admin123") {
+            // Password is correct
+            // Show a success message (optional)
+            window.alert("Login Successful! Redirecting to dashboard...");
+            
+            // Redirect to the admin dashboard page
+            // (Note: admin-dashboard.html does not exist yet)
+            window.location.href = "admin-dashboard.html";
+
+        } else {
+            // Password is incorrect
+            // Show an error message
+            //
+            errorMessage.innerHTML = "Invalid username or password. Please try again.";
+            errorMessage.style.display = "block";
+        }
+    });
+    
+}
+     $(function() {
+            $("#header").load("header.html");
+            $("#footer").load("footer.html");
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery - Samarpan</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+            color: #2c2c2c;
+            background: linear-gradient(135deg, #fef9f3 0%, #fff5e6 100%);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+        radial-gradient(circle, rgba(220, 84, 36, 0.02) 1px, transparent 1px);
+            background-size: 25px 25px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 5rem 2rem 4rem;
+            text-align: center;
+            background: linear-gradient(to bottom, rgba(255, 248, 240, 0.6), rgba(255, 240, 224, 0.7));
+            border-bottom: 4px dashed #f4a460;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            color: #dc5424;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Filter Section */
+        .filter-section {
+            padding: 3rem 2rem;
+            background: white;
+            border-bottom: 4px dashed #dc5424;
+        }
+
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.8rem 2rem;
+            background: white;
+            border: 2px solid #f4a460;
+            color: #dc5424;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.9rem;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: #dc5424;
+            color: white;
+            border-color: #dc5424;
+            transform: translateY(-2px);
+        }
+
+        /* Gallery Grid */
+        .gallery-section {
+            padding: 5rem 2rem;
+            background: linear-gradient(135deg, rgba(255, 248, 240, 0.5), rgba(255, 240, 224, 0.3));
+            border-bottom: 4px dashed #f4a460;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .gallery-item {
+            background: white;
+            border: 2px solid #f4a460;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.4s;
+            position: relative;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-8px);
+            border-color: #dc5424;
+            box-shadow: 0 15px 40px rgba(220, 84, 36, 0.2);
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, #dc5424, #f4a460);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+            color: white;
+            font-size: 2rem;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        .gallery-info {
+            padding: 1.5rem;
+        }
+
+        .gallery-info h3 {
+            font-size: 1.2rem;
+            color: #dc5424;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .gallery-info p {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .gallery-date {
+            font-size: 0.8rem;
+            color: #f4a460;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            color: #dc5424;
+            cursor: pointer;
+            background: white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #dc5424;
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 500px;
+            background: linear-gradient(135deg, #dc5424, #f4a460);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8rem;
+            color: white;
+            border-radius: 8px;
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+        gap: 1.2rem;
+        font-size: 0.75rem;
+            }
+
+            .hero h1 {
+        font-size: 2.5rem;
+            }
+
+            .gallery-grid {
+        grid-template-columns: 1fr;
+            }
+
+            .filter-buttons {
+        flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <div id="header"></div>
+    <!--
+    <nav id="navbar">
+        <div class="container">
+            <div class="logo">
+                <div class="logo-icon">🪟</div>
+                <div class="logo-text">
+                    <div class="logo-main">Samarpan</div>
+                    <div class="logo-gujarati">સમર્પણ</div>
+                    <div class="logo-sub">Gujarati Cultural Association Kuwait</div>
+                </div>
+            </div>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="events.html">Events</a></li>
+                <li><a href="gallery.html" class="active">Gallery</a></li>
+                <li><a href="news.html">News</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="admin-login.html" class="admin-link">Admin</a></li>
+            </ul>
+        </div>
+    </nav>-->
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <h1>Photo Gallery</h1>
+            <p>Memories from our community celebrations and events</p>
+        </div>
+    </section>
+
+    <!-- Filter Section -->
+    <section class="filter-section">
+        <div class="container">
+            <div class="filter-buttons">
+                <button class="filter-btn active" onclick="filterGallery('all')">All Photos</button>
+                <button class="filter-btn" onclick="filterGallery('diwali')">Diwali</button>
+                <button class="filter-btn" onclick="filterGallery('garba')">Garba</button>
+                <button class="filter-btn" onclick="filterGallery('food')">Food Festival</button>
+                <button class="filter-btn" onclick="filterGallery('community')">Community</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Grid -->
+    <section class="gallery-section">
+        <div class="container">
+            <div class="gallery-grid">
+                <div class="gallery-item" data-category="diwali" onclick="openModal(this)">
+                    <div class="gallery-image">
+                        🪔
+                        <div class="gallery-overlay">🔍</div>
+                    </div>
+                    <div class="gallery-info">
+                        <h3>Diwali Celebration 2024</h3>
+                        <p>Beautiful rangoli competition and diya lighting ceremony</p>
+                        <div class="gallery-date">October 24, 2024</div>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="garba" onclick="openModal(this)">
+                    <div class="gallery-image">
+                        💃
+                        <div class="gallery-overlay">🔍</div>
+                    </div>
+                    <div class="gallery-info">
+                        <h3>Garba Night 2024</h3>
+                        <p>Vibrant Garba and Dandiya performances under the stars</p>
+                        <div class="gallery-date">September 15, 2024</div>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="food" onclick="openModal(this)">
+                    <div class="gallery-image">
+                        🍛
+                        <div class="gallery-overlay">🔍</div>
+                    </div>
+                    <div class="gallery-info">
+                        <h3>Food Festival 2024</h3>
+                        <p>Authentic Gujarati delicacies and traditional cooking</p>
+                        <div class="gallery-date">August 20, 2024</div>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="community" onclick="openModal(this)">
+                    <div class="gallery-image">
+                        🤝
+                        <div class="gallery-overlay">🔍</div>
+                    </div>
+                    <div class="gallery-info">
+                        <h3>Community Service Day</h3>
+                        <p>Giving back to society through charitable activities</p>
+                        <div class="gallery-date">July 10, 2024</div>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="diwali" onclick="openModal(this)">
+                    <div class="gallery-image">
+                        ✨
+                        <div class="gallery-overlay">🔍</div>
+                    </div>
+                    <div class="gallery-info">
+                        <h3>Diwali Fireworks</h3>
+                        <p>Spectacular fireworks display lighting up the night</p>
+                        <div class="gallery-date">October 24, 2024</div>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="garba" onclick="openModal(this)">
+                    <div class="gallery-image">
+                        🎭
+                        <div class="gallery-overlay">🔍</div>
+                    </div>
+                    <div class="gallery-info">
+                        <h3>Traditional Dance</h3>
+                        <p>Folk dance performances showcasing Gujarati culture</p>
+                        <div class="gallery-date">September 16, 2024</div>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="community" onclick="openModal(this)">
+                    <div class="gallery-image">
+                        👨‍👩‍👧‍👦
+                        <div class="gallery-overlay">🔍</div>
+                    </div>
+                    <div class="gallery-info">
+                        <h3>Family Picnic 2024</h3>
+                        <p>Fun-filled day with families enjoying games and food</p>
+                        <div class="gallery-date">June 5, 2024</div>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="food" onclick="openModal(this)">
+                    <div class="gallery-image">
+                        🥘
+                        <div class="gallery-overlay">🔍</div>
+                    </div>
+                    <div class="gallery-info">
+                        <h3>Cooking Competition</h3>
+                        <p>Best Gujarati dishes prepared by talented home chefs</p>
+                        <div class="gallery-date">August 21, 2024</div>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="community" onclick="openModal(this)">
+                    <div class="gallery-image">
+                        📚
+                        <div class="gallery-overlay">🔍</div>
+                    </div>
+                    <div class="gallery-info">
+                        <h3>Language Workshop</h3>
+                        <p>Teaching Gujarati to children in an engaging way</p>
+                        <div class="gallery-date">May 12, 2024</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal -->
+    <div class="modal" id="imageModal" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-close" onclick="closeModal()">×</div>
+            <div class="modal-image" id="modalImage">📷</div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+    <!--<footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Samarpan</h3>
+                    <p>A cultural beacon serving the Gujarati community in Kuwait with pride, heritage, and unity.</p>
+                    <div class="social-links">
+                        <a href="#">f</a>
+                        <a href="#">𝕏</a>
+                        <a href="#">in</a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a href="events.html">Events</a>
+                    <a href="gallery.html">Gallery</a>
+                    <a href="news.html">News</a>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <a href="mailto:info@samarpan.kw">info@samarpan.kw</a>
+                    <p>+965 XXXX XXXX</p>
+                    <p>Kuwait</p>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Legal</h3>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Code of Conduct</a>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2025 Samarpan - Gujarati Cultural Association, Kuwait | જય ગુજરાત | Under the Patronage of Indian Embassy</p>
+            </div>
+        </div>
+    </footer>-->
+
+
+    <script src="jquery-3.7.1.min.js"></script>
+    <script>
+        var lastScrollTop = 0;
+        var nav = document.getElementById("navbar");
+
+        window.onscroll = function () {
+            var currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+            if (currentScroll > lastScrollTop) {
+                /* Scrolling Down → Hide Navbar */
+                nav.style.top = "-120px";
+            } else {
+                /* Scrolling Up → Show Navbar */
+                nav.style.top = "0";
+            }
+
+            lastScrollTop = currentScroll;
+        };
+
+        function filterGallery(category) {
+            const items = document.querySelectorAll('.gallery-item');
+            const buttons = document.querySelectorAll('.filter-btn');
+
+            // Update active button
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Filter items
+            items.forEach(item => {
+                if (category === 'all' || item.dataset.category === category) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function openModal(element) {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const emoji = element.querySelector('.gallery-image').textContent.trim().split('\n')[0];
+            
+            modalImage.textContent = emoji;
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.remove('active');
+        }
+         $(function() {
+            $("#header").load("header.html");
+            $("#footer").load("footer.html");
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Samarpan - The Gujarati Cultural Association Kuwait</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+            color: #2c2c2c;
+            background: linear-gradient(135deg, #fff8f0 0%, #fff5e6 100%);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Bandhani pattern background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle, rgba(220, 84, 36, 0.04) 2px, transparent 2px);
+            background-size: 20px 20px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 7rem 2rem;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(135deg, rgba(220, 84, 36, 0.05), rgba(244, 164, 96, 0.05));
+            border-bottom: 3px solid #f4a460;
+        }
+
+        .hero::before {
+            content: '🪟';
+            position: absolute;
+            top: 10%;
+            right: 5%;
+            font-size: 8rem;
+            opacity: 0.08;
+            transform: rotate(-20deg);
+        }
+
+        .hero::after {
+            content: '🪟';
+            position: absolute;
+            bottom: 10%;
+            left: 5%;
+            font-size: 7rem;
+            opacity: 0.08;
+            transform: rotate(25deg);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 0.3rem;
+            font-weight: 700;
+            color: #dc5424;
+            letter-spacing: -1px;
+        }
+
+        .hero .gujarati-text {
+            font-size: 1.8rem;
+            color: #f4a460;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .hero .subtitle {
+            font-size: 0.95rem;
+            color: #888;
+            margin-bottom: 2rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .hero p {
+            font-size: 1rem;
+            margin-bottom: 2.5rem;
+            color: #555;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.9rem 2.2rem;
+            border: none;
+            border-radius: 0;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 100%, 12px 100%);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #dc5424 0%, #c94515 100%);
+            color: white;
+            border: 2px solid #dc5424;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(220, 84, 36, 0.35);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #dc5424;
+            border: 2px solid #dc5424;
+        }
+
+        .btn-secondary:hover {
+            background: #dc5424;
+            color: white;
+        }
+
+        /* Stats Section */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            padding: 3.5rem 2rem;
+            background: white;
+            border-top: 3px dashed #dc5424;
+            border-bottom: 3px dashed #dc5424;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(244, 164, 96, 0.08), rgba(220, 84, 36, 0.05));
+            border: 2px solid #f4a460;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 45px;
+            height: 45px;
+            background: white;
+            border: 2px solid #dc5424;
+            clip-path: polygon(25% 0%, 75% 0%, 100% 25%, 100% 75%, 75% 100%, 25% 100%, 0% 75%, 0% 25%);
+        }
+
+        .stat-card:hover {
+            border-color: #dc5424;
+            box-shadow: 0 8px 20px rgba(220, 84, 36, 0.12);
+            transform: translateY(-3px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #dc5424;
+            margin-bottom: 0.3rem;
+            margin-top: 0.8rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-weight: 500;
+            font-size: 0.85rem;
+            letter-spacing: 0.3px;
+        }
+
+        /* About Section */
+        .about {
+            padding: 5rem 2rem;
+            background: white;
+            border-bottom: 4px dashed #f4a460;
+        }
+
+        .about h2 {
+            font-size: 2.8rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: #dc5424;
+        }
+
+        .about-tagline {
+            text-align: center;
+            color: #f4a460;
+            font-size: 0.95rem;
+            margin-bottom: 3rem;
+            letter-spacing: 1px;
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            color: #555;
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+
+        .about-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        /* Highlights Section */
+        .highlights {
+            padding: 5rem 2rem;
+            background: linear-gradient(135deg, rgba(255, 248, 240, 0.5), rgba(255, 240, 224, 0.3));
+            border-bottom: 3px dashed #dc5424;
+        }
+
+        .section-title {
+            font-size: 2.8rem;
+            text-align: center;
+            margin-bottom: 3.5rem;
+            color: #dc5424;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #dc5424, transparent);
+        }
+
+        .highlight-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .highlight-card {
+            background: white;
+            padding: 2.2rem;
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+            border: 2px solid rgba(220, 84, 36, 0.15);
+            transform: rotate(-1deg);
+        }
+
+        .highlight-card:nth-child(even) {
+            transform: rotate(1deg);
+        }
+
+        .highlight-card:hover {
+            transform: rotate(0deg) translateY(-6px);
+            border-color: #dc5424;
+            box-shadow: 0 12px 30px rgba(220, 84, 36, 0.12);
+        }
+
+        .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .highlight-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+            color: #dc5424;
+            font-weight: 600;
+        }
+
+        .highlight-card p {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* Events Section */
+        .events {
+            padding: 5rem 2rem;
+            background: white;
+            border-bottom: 3px dashed #dc5424;
+        }
+
+        .event-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .event-card {
+            background: linear-gradient(135deg, rgba(244, 164, 96, 0.08), rgba(220, 84, 36, 0.05));
+            overflow: hidden;
+            transition: all 0.3s;
+            position: relative;
+            border: 2px solid #f4a460;
+        }
+
+        .event-card:hover {
+            transform: translateY(-8px);
+            border-color: #dc5424;
+            box-shadow: 0 15px 35px rgba(220, 84, 36, 0.18);
+        }
+
+        .event-image {
+            background: linear-gradient(135deg, #dc5424 0%, #f4a460 100%);
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3.5rem;
+            position: relative;
+        }
+
+        .event-content {
+            padding: 2rem;
+        }
+
+        .event-date {
+            color: #f4a460;
+            font-weight: 700;
+            font-size: 0.8rem;
+            margin-bottom: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .event-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.7rem;
+            color: #dc5424;
+            font-weight: 600;
+        }
+
+        .event-card p {
+            color: #666;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .btn-learn {
+            background: linear-gradient(135deg, #dc5424 0%, #c94515 100%);
+            color: white;
+            padding: 0.7rem 1.6rem;
+            border-radius: 0;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            letter-spacing: 0.3px;
+            clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 100%, 8px 100%);
+        }
+
+        .btn-learn:hover {
+            transform: translateX(2px);
+            box-shadow: 0 8px 18px rgba(220, 84, 36, 0.3);
+        }   
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav ul {
+                gap: 1.2rem;
+                font-size: 0.75rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero .gujarati-text {
+                font-size: 1.3rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .logo-icon {
+                font-size: 1.8rem;
+            }
+
+            .stat-card, .highlight-card, .event-card {
+                transform: rotate(0deg);
+            }
+
+            .highlight-card:nth-child(even) {
+                transform: rotate(0deg);
+            }
+        }
+    </style>                                  
+</head>
+<body>
+    <!-- Navigation -->
+     <div id="header"></div>
+    <!--<nav id="navbar">
+        <div class="container">
+            <div class="logo">
+                <div class="logo-icon"><img src="logo_samarpan.jpg" height="100"></div>
+                <div class="logo-text">
+                    <div class="logo-main">Samarpan</div>
+                    <div class="logo-gujarati">સમર્પણ</div>
+                    <div class="logo-sub">Gujarati Cultural Association Kuwait</div>
+                </div>
+            </div>
+            <ul>
+                <li></li>
+                <li><a href="index.html">Home ઘર</a></li>
+                <li><a href="about.html">About  પરિચય</a></li>
+                <li><a href="events.html">Events  કાર્યક્રમો</a></li>
+                <li><a href="gallery.html">Gallery  ગેલેરી</a></li>
+                <li><a href="news.html">News સમાચાર</a></li>
+                <li><a href="contact.html">Contact સંપર્ક</a></li>
+                <li><a href="admin-login.html" class="admin-link">Admin</a></li>
+            </ul>
+        </div>
+    </nav>-->
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Samarpan</h1>
+            <div class="gujarati-text">સમર્પણ</div>
+            <div class="subtitle">Under the Aegis of Indian Embassy, Kuwait</div>
+            <p>Preserving our Gujarati heritage, celebrating our culture, and uniting the Gujarati community in Kuwait through meaningful events and cultural experiences.</p>
+            <div class="cta-buttons">
+                <button class="btn btn-primary">Join Us</button>
+                <button class="btn btn-secondary">Learn More</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="stat-card">
+            <div class="stat-number">2,500+</div>
+            <div class="stat-label">Members</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">10</div>
+            <div class="stat-label">Events Yearly</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">15+</div>
+            <div class="stat-label">Years Active</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">1</div>
+            <div class="stat-label">Big Family</div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <h2>About Samarpan</h2>
+            <div class="about-tagline">A beacon of Gujarati culture in Kuwait</div>
+            <div class="about-content">
+                <p>Samarpan, the Gujarati Cultural Association of Kuwait, operates under the aegis of the Indian Embassy and serves as a vital community platform for Gujaratis residing in Kuwait. Since our establishment, we have been dedicated to preserving and promoting Gujarati culture, traditions, and values.</p>
+                <p>Our mission is to create a vibrant community where Gujarati families can celebrate their heritage, participate in cultural events, support one another, and pass down our rich traditions to the next generation. Through festivals, social initiatives, and cultural programs, we strengthen the bonds within our community.</p>
+                <p>Samarpan is more than an organization—it's a family united by our shared heritage and commitment to keeping Gujarat alive in our hearts while we thrive in Kuwait.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Highlights Section -->
+    <section class="highlights">
+        <div class="container">
+            <h2 class="section-title">Our Values</h2>
+            <div class="highlight-grid">
+                <div class="highlight-card">
+                    <div class="icon">🎊</div>
+                    <h3>Heritage</h3>
+                    <p>Celebrate and preserve our Gujarati traditions and cultural values for generations to come</p>
+                </div>
+                <div class="highlight-card">
+                    <div class="icon">👨‍👩‍👧‍👦</div>
+                    <h3>Community</h3>
+                    <p>Build strong bonds and foster unity among all Gujarati families in Kuwait</p>
+                </div>
+                <div class="highlight-card">
+                    <div class="icon">🤝</div>
+                    <h3>Support</h3>
+                    <p>Stand together as a compassionate family ready to support each other</p>
+                </div>
+                <div class="highlight-card">
+                    <div class="icon">✨</div>
+                    <h3>Excellence</h3>
+                    <p>Organize meaningful and high-quality cultural events for our community</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Events Section -->
+    <section class="events" id="events">
+        <div class="container">
+            <h2 class="section-title">Upcoming Celebrations</h2>
+            <div class="event-grid">
+                <div class="event-card">
+                    <div class="event-image">🪔</div>
+                    <div class="event-content">
+                        <div class="event-date">October 25, 2025</div>
+                        <h3>Diwali Utshav</h3>
+                        <p>Celebrate Diwali with our community - rangoli competition, traditional sweets, and cultural performances</p>
+                        <a href="events.html" class="btn-learn">Details →</a>
+                    </div>
+                </div>
+
+                <div class="event-card">
+                    <div class="event-image">💃</div>
+                    <div class="event-content">
+                        <div class="event-date">December 10, 2025</div>
+                        <h3>Garba & Dandiya</h3>
+                        <p>Experience vibrant Garba nights with traditional music and dance under the stars</p>
+                        <a href="events.html" class="btn-learn">Details →</a>
+                    </div>
+                </div>
+
+                <div class="event-card">
+                    <div class="event-image">🍛</div>
+                    <div class="event-content">
+                        <div class="event-date">January 8, 2026</div>
+                        <h3>Gujarati Food Festival</h3>
+                        <p>Enjoy authentic Gujarati cuisine - dhokla, fafda, khichdi and more homemade delicacies</p>
+                        <a href="events.html" class="btn-learn">Details →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+    <!--<footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Samarpan</h3>
+                    <p>A cultural beacon serving the Gujarati community in Kuwait with pride, heritage, and unity.</p>
+                    <div class="social-links">
+                        <a href="#">f</a>
+                        <a href="#">𝕏</a>
+                        <a href="#">in</a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a href="events.html">Events</a>
+                    <a href="gallery.html">Gallery</a>
+                    <a href="news.html">News</a>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <a href="mailto:info@samarpan.kw">info@samarpan.kw</a>
+                    <p>+965 XXXX XXXX</p>
+                    <p>Kuwait</p>
+                </div>
+
+            <div class="footer-bottom">
+                <p>© 2025 Samarpan - Gujarati Cultural Association, Kuwait | જય ગુજરાત | Under the Patronage of Indian Embassy</p>
+            </div>
+        </div>
+    </footer>-->
+   <script src="jquery-3.7.1.min.js"></script>
+    <script>
+    $(document).ready(function(){
+        $("#header").load("header.html");
+        $("#footer").load("footer.html");
+    });
+    </script>
+</body>
+</html>

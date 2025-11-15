@@ -1,64 +1,835 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Admin Dashboard - Samarpan</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Samarpan - Admin Dashboard</title>
     <style>
-        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Layout */
+        .admin-container {
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: linear-gradient(135deg, #dc5424 0%, #c94515 100%);
+            color: white;
+            padding: 2rem 0;
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: 250px;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 0 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 1.5rem;
+        }
+
+        .sidebar-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-subtitle {
+            font-size: 0.7rem;
+            letter-spacing: 1.5px;
+            opacity: 0.9;
+            margin-top: 0.3rem;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+        }
+
+        .sidebar-nav li {
+            margin-bottom: 0.5rem;
+            padding: 0 1rem;
+        }
+
+        .sidebar-nav a {
+            display: block;
+            padding: 1rem 1.5rem;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.3s;
+            font-weight: 500;
+            border-left: 4px solid transparent;
+            position: relative;
+        }
+
+        .sidebar-nav a:hover,
+        .sidebar-nav a.active {
+            background: rgba(255, 255, 255, 0.2);
+            border-left-color: #ffbe0b;
+            padding-left: 2rem;
+        }
+
+        .sidebar-nav a.active {
+            background: rgba(255, 255, 255, 0.3);
+            font-weight: bold;
+        }
+
+        .logout-btn {
+            position: absolute;
+            bottom: 2rem;
+            left: 1rem;
+            right: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: white;
+            color: #dc5424;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 250px;
+            flex: 1;
+        }
+
+        .topbar {
+            background: white;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #dc5424;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            margin-top:0;
+        }
+
+        .topbar h2 {
+            font-size: 1.5rem;
+            color: #dc5424;
+            font-weight: bold;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #dc5424, #f4a460);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .user-name {
+            color: #333;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+
+        /* Content Area */
+        .content {
+            padding: 2rem;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Dashboard Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            border-left: 4px solid #dc5424;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(220, 84, 36, 0.15);
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #dc5424;
+            margin-bottom: 0.3rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Table */
+        .table-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .table-header {
+            padding: 1.5rem;
+            border-bottom: 2px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-header h3 {
+            color: #333;
+            font-size: 1.1rem;
+        }
+
+        .btn-add {
+            background: linear-gradient(135deg, #dc5424, #f4a460);
+            color: white;
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-add:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(220, 84, 36, 0.3);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th {
+            background: #f9fafb;
+            padding: 1rem 1.5rem;
+            text-align: left;
+            font-weight: bold;
+            color: #666;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        table td {
+            padding: 1.2rem 1.5rem;
+            border-bottom: 1px solid #f0f0f0;
+            color: #555;
+        }
+
+        table tr:hover {
+            background: #f9fafb;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-edit, .btn-delete {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-edit {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .btn-edit:hover {
+            background: #1976d2;
+            color: white;
+        }
+
+        .btn-delete {
+            background: #ffebee;
+            color: #d32f2f;
+        }
+
+        .btn-delete:hover {
+            background: #d32f2f;
+            color: white;
+        }
+
+        .status-badge {
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .status-active {
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+
+        .status-inactive {
+            background: #ffccbc;
+            color: #d84315;
+        }
+
+        /* Form Section */
+        .form-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            max-width: 600px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #333;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #f0f0f0;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-family: Arial, sans-serif;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #dc5424;
+            box-shadow: 0 0 0 3px rgba(220, 84, 36, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #dc5424, #f4a460);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(220, 84, 36, 0.3);
+        }
+
+        /* Gallery Grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            padding: 2rem;
+        }
+
+        .gallery-item {
+            height: 150px;
+            background: linear-gradient(135deg, #dc5424, #f4a460);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(220, 84, 36, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .admin-container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: fixed;
+                left: -250px;
+                width: 250px;
+                transition: left 0.3s;
+            }
+
+            .sidebar.open {
+                left: 0;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .content {
+                padding: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .topbar {
+                padding: 1rem;
+            }
+
+            .topbar h2 {
+                font-size: 1.2rem;
+            }
+
+            table {
+                font-size: 0.85rem;
+            }
+
+            table th, table td {
+                padding: 0.8rem;
+            }
+        }
     </style>
 </head>
 <body>
-    <div id="header"></div>
 
-    <main class="admin-main container">
-        <section id="admin-dashboard" class="card">
-            <div class="dashboard-header">
-                <h2>Admin Dashboard</h2>
-                <button id="logoutBtn" class="btn-ghost">Logout</button>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-icon">🪟</div>
+                <div class="sidebar-title">Samarpan</div>
+                <div class="sidebar-subtitle">Admin Panel</div>
             </div>
 
-            <!-- Add / Edit Form -->
-            <div class="form-panel">
-                <h3 id="formTitle">Add Event</h3>
-                <div class="form-row">
-                    <label for="evTitle">Title</label>
-                    <input id="evTitle" type="text" />
-                </div>
-                <div class="form-row">
-                    <label for="evDate">Date</label>
-                    <input id="evDate" type="date" />
-                </div>
-                <div class="form-row">
-                    <label for="evDesc">Short Description</label>
-                    <textarea id="evDesc" rows="3"></textarea>
-                </div>
+            <nav class="sidebar-nav">
+                <li><a href="#" class="nav-link active" data-section="dashboard">📊 Dashboard</a></li>
+                <li><a href="#" class="nav-link" data-section="members">👥 Members</a></li>
+                <li><a href="#" class="nav-link" data-section="events">🎊 Events</a></li>
+                <li><a href="#" class="nav-link" data-section="gallery">🖼️ Gallery</a></li>
+                <li><a href="#" class="nav-link" data-section="news">📰 News</a></li>
+                <li><a href="#" class="nav-link" data-section="settings">⚙️ Settings</a></li>
+            </nav>
 
-                <div class="form-actions">
-                    <button id="saveBtn" class="btn-primary">Save</button>
-                    <button id="cancelEditBtn" class="btn-ghost" style="display:none;">Cancel</button>
-                </div>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </aside>
 
-                <div id="formMessage" class="form-help" aria-live="polite"></div>
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="topbar">
+                <h2 id="pageTitle">Dashboard</h2>
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">A</div>
+                    <span class="user-name" id="userName">Admin</span>
+                </div>
             </div>
 
-            <!-- Event list -->
-            <div class="list-panel">
-                <h3>Events</h3>
-                <div id="eventsList" class="events-list"></div>
-                <div id="emptyMessage" class="form-help">No events yet. Add one above.</div>
+            <div class="content">
+                <!-- Dashboard Section -->
+                <section class="section active" id="dashboard">
+                    <h3 style="font-size: 1.3rem; margin-bottom: 1.5rem; color: #dc5424;">Welcome to Admin Dashboard</h3>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">👥</div>
+                            <div class="stat-number">2,547</div>
+                            <div class="stat-label">Total Members</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🎊</div>
+                            <div class="stat-number">25</div>
+                            <div class="stat-label">Upcoming Events</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📰</div>
+                            <div class="stat-number">142</div>
+                            <div class="stat-label">Total Posts</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🖼️</div>
+                            <div class="stat-number">856</div>
+                            <div class="stat-label">Gallery Images</div>
+                        </div>
+                    </div>
+
+                    <h3 style="font-size: 1.1rem; margin-top: 2rem; margin-bottom: 1rem; color: #333;">Recent Activity</h3>
+                    
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Activity</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Diwali Event Created</td>
+                                    <td>2025-10-20</td>
+                                    <td><span class="status-badge status-active">Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td>New Member Joined</td>
+                                    <td>2025-10-19</td>
+                                    <td><span class="status-badge status-active">Approved</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Gallery Updated</td>
+                                    <td>2025-10-18</td>
+                                    <td><span class="status-badge status-active">Complete</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Blog Post Published</td>
+                                    <td>2025-10-17</td>
+                                    <td><span class="status-badge status-active">Published</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Members Section -->
+                <section class="section" id="members">
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h3>Manage Members</h3>
+                            <button class="btn-add">+ Add Member</button>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Join Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Rajesh Patel</td>
+                                    <td>rajesh@email.com</td>
+                                    <td>2024-05-15</td>
+                                    <td><span class="status-badge status-active">Active</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-edit">Edit</button>
+                                            <button class="btn-delete">Delete</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Priya Shah</td>
+                                    <td>priya@email.com</td>
+                                    <td>2024-06-20</td>
+                                    <td><span class="status-badge status-active">Active</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-edit">Edit</button>
+                                            <button class="btn-delete">Delete</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Amit Desai</td>
+                                    <td>amit@email.com</td>
+                                    <td>2024-07-10</td>
+                                    <td><span class="status-badge status-inactive">Inactive</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-edit">Edit</button>
+                                            <button class="btn-delete">Delete</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Neha Mehta</td>
+                                    <td>neha@email.com</td>
+                                    <td>2024-08-05</td>
+                                    <td><span class="status-badge status-active">Active</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-edit">Edit</button>
+                                            <button class="btn-delete">Delete</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Events Section -->
+                <section class="section" id="events">
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h3>Manage Events</h3>
+                            <button class="btn-add">+ Add Event</button>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Event Name</th>
+                                    <th>Date</th>
+                                    <th>Location</th>
+                                    <th>Attendees</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Diwali Celebration</td>
+                                    <td>2025-10-25</td>
+                                    <td>Community Hall</td>
+                                    <td>500+</td>
+                                    <td><span class="status-badge status-active">Upcoming</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-edit">Edit</button>
+                                            <button class="btn-delete">Delete</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Garba Night</td>
+                                    <td>2025-12-10</td>
+                                    <td>Open Ground</td>
+                                    <td>800+</td>
+                                    <td><span class="status-badge status-active">Upcoming</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-edit">Edit</button>
+                                            <button class="btn-delete">Delete</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Food Festival</td>
+                                    <td>2026-01-08</td>
+                                    <td>Convention Center</td>
+                                    <td>600+</td>
+                                    <td><span class="status-badge status-active">Upcoming</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-edit">Edit</button>
+                                            <button class="btn-delete">Delete</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Gallery Section -->
+                <section class="section" id="gallery">
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h3>Manage Gallery</h3>
+                            <button class="btn-add">+ Upload Images</button>
+                        </div>
+                        <div style="padding: 2rem;">
+                            <p style="color: #666; margin-bottom: 1rem;">Total Images: <strong>856</strong></p>
+                            <div class="gallery-grid">
+                                <div class="gallery-item">🪔</div>
+                                <div class="gallery-item">💃</div>
+                                <div class="gallery-item">🍛</div>
+                                <div class="gallery-item">🤝</div>
+                                <div class="gallery-item">🎭</div>
+                                <div class="gallery-item">👨‍👩‍👧‍👦</div>
+                                <div class="gallery-item">📚</div>
+                                <div class="gallery-item">🎊</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- News Section -->
+                <section class="section" id="news">
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h3>Manage News & Blog</h3>
+                            <button class="btn-add">+ Create Post</button>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Category</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Diwali 2025: Our Biggest Celebration</td>
+                                    <td>Featured</td>
+                                    <td>2025-10-20</td>
+                                    <td><span class="status-badge status-active">Published</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-edit">Edit</button>
+                                            <button class="btn-delete">Delete</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>New Language Classes Launch</td>
+                                    <td>Education</td>
+                                    <td>2025-10-15</td>
+                                    <td><span class="status-badge status-active">Published</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-edit">Edit</button>
+                                            <button class="btn-delete">Delete</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Community Service Day Success</td>
+                                    <td>Community</td>
+                                    <td>2025-10-10</td>
+                                    <td><span class="status-badge status-active">Published</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-edit">Edit</button>
+                                            <button class="btn-delete">Delete</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Settings Section -->
+                <section class="section" id="settings">
+                    <div class="form-section">
+                        <h3 style="font-size: 1.5rem; margin-bottom: 2rem; color: #dc5424;">General Settings</h3>
+                        
+                        <div class="form-group">
+                            <label>Community Name</label>
+                            <input type="text" value="Samarpan - Gujarati Cultural Association">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Contact Email</label>
+                            <input type="email" value="info@samarpan.kw">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Contact Phone</label>
+                            <input type="tel" value="+965 XXXX XXXX">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Address</label>
+                            <textarea>Kuwait City, Kuwait</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>About Description</label>
+                            <textarea>Samarpan is a Gujarati Cultural Association in Kuwait under the patronage of the Indian Embassy.</textarea>
+                        </div>
+
+                        <button class="btn-submit">Save Changes</button>
+                    </div>
+                </section>
             </div>
-        </section>
-    </main>
+        </main>
+    </div>
 
-    <div id="footer"></div>
-
-    <script src="jquery-3.7.1.min.js"></script>
-    <script>
-        $(function(){
-            $("#header").load("header.html");
-            $("#footer").load("footer.html");
-        });
-    </script>
+    <script src="admin-dashboard.js"></script>
 </body>
 </html>

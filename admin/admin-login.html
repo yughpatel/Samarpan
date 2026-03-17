@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Samarpan</title>
+    <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+
+<body>
+
+    <div class="login-box">
+        <h2>Admin Login</h2>
+
+        <input type="text" id="username" placeholder="Enter Username">
+        <input type="password" id="password" placeholder="Enter Password">
+
+        <button id="login-btn" class="login-btn">Login</button>
+
+        <div class="error-message" id="error"></div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <script>
+        var admins = [
+            { username: "admin", password: "samarpan123" },
+            { username: "samarpan", password: "gujarati" },
+            { username: "admin", password: "admin123" }
+        ];
+        $("#login-btn").click(function () {
+
+            var user = $("#username").val();
+            var pass = $("#password").val();
+
+            var authenticated = false;
+
+            for (var i = 0; i < admins.length; i++) {
+                if (admins[i].username === user && admins[i].password === pass) {
+                    authenticated = true;
+                    break;
+                }
+            }
+
+            if (authenticated) {
+                window.location.href = "/admin/dmin-dashboard.html?user=" + encodeURIComponent(user);
+
+            } else {
+                $("#error").html("Invalid username or password");
+            }
+        });
+    </script>
+</body>
+
+</html>

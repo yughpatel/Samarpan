@@ -1,0 +1,47 @@
+<nav id="navbar">
+    <div class="container">
+        <div class="logo">
+            <img src="/assets/images/logo_samarpan.jpg" class="samarpan-logo" alt="Samarpan Logo" height="100">
+
+            <div class="logo-text">
+                <span class="logo-main">SAMARPAN</span>
+                <span class="logo-gujarati">સમર્પણ – ગુજરાતી કલ્ચરલ એસોસિએશન કૂવૈત</span>
+                <span class="logo-sub">CULTURAL • UNITY • COMMUNITY</span>
+            </div>
+        </div>
+
+        <div class="hamburger">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="/index.html">Home</a></li>
+            <li><a href="/about.html">About Us</a></li>
+            <li><a href="/events.html">Events</a></li>
+            <li><a href="/gallery.html">Gallery</a></li>
+            <li><a href="/news.html">News & Blog</a></li>
+            <li><a href="/contact.html">Contact</a></li>
+
+            <li>
+                <a href="/admin/admin-login.html" class="admin-link">Admin</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<script>
+    const hamburger = document.querySelector(".hamburger");
+    const navLinks = document.querySelector(".nav-links");
+
+    hamburger.addEventListener("click", () => {
+        hamburger.classList.toggle("active");
+        navLinks.classList.toggle("active");
+    });
+
+    document.querySelectorAll(".nav-links a").forEach(n => n.addEventListener("click", () => {
+        hamburger.classList.remove("active");
+        navLinks.classList.remove("active");
+    }));
+</script>

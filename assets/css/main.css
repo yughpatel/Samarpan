@@ -68,7 +68,7 @@ nav {
     position: sticky;
     top: 0;
     z-index: 100;
-    padding: 1rem 2rem;
+    padding: 0.5rem 2rem;
     box-shadow: 0 4px 20px rgba(220, 84, 36, 0.1);
 }
 
@@ -145,7 +145,7 @@ nav .container {
 
 nav ul {
     display: flex;
-    gap: 2rem;
+    gap: 1.1rem;
     align-items: center;
     margin: 0;
     padding: 0;
@@ -157,9 +157,16 @@ nav a {
     font-weight: 500;
     transition: all 0.3s;
     position: relative;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
+}
+
+.samarpan-logo {
+    height: 75px;
+    width: auto;
+    object-fit: contain;
+    transition: all 0.3s ease;
 }
 
 nav a::after {
@@ -215,25 +222,29 @@ nav a:hover {
 }
 
 /* Header Responsive */
-@media (max-width: 1024px) {
+@media (max-width: 1300px) {
     nav .container {
-        padding: 0.5rem 1rem;
+        padding: 0.4rem 1rem;
     }
 
     .logo-main {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
     }
 
     .logo-gujarati {
-        font-size: 0.8rem;
+        font-size: 0.75rem;
     }
 
-    .nav-links {
-        gap: 1.5rem;
+    .samarpan-logo {
+        height: 60px;
+    }
+
+    nav ul {
+        gap: 0.75rem;
     }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1150px) {
     .hamburger {
         display: flex;
         z-index: 201;
@@ -281,7 +292,7 @@ nav a:hover {
     }
 
     .logo img {
-        height: 60px;
+        height: 55px;
     }
 }
 

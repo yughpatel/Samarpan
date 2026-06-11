@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Us - Samarpan Gujarati Cultural Association Kuwait</title>
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <style>
+        /* Form-specific wizard overrides and improvements */
+        .wizard-container {
+            max-width: 900px;
+            margin: 3rem auto;
+            background: var(--white);
+            border: 3px solid var(--primary-color);
+            padding: 2.5rem;
+            position: relative;
+            box-shadow: 0 15px 40px rgba(220, 84, 36, 0.08);
+        }
+
+        .step-progress {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 3rem;
+        }
+
+        .step-progress::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #ffe6d5;
+            z-index: 1;
+            transform: translateY(-50%);
+        }
+
+        .progress-bar-fill {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            z-index: 2;
+            transform: translateY(-50%);
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        .step-node {
+            width: 45px;
+            height: 45px;
+            background: var(--white);
+            border: 3px solid #ffe6d5;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--text-light);
+            position: relative;
+            z-index: 3;
+            transition: all 0.3s ease;
+        }
+
+        .step-node.active {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            box-shadow: 0 0 0 5px rgba(220, 84, 36, 0.15);
+            background: var(--white);
+        }
+
+        .step-node.completed {
+            border-color: var(--primary-color);
+            background: var(--primary-color);
+            color: var(--white);
+        }
+
+        .step-label {
+            position: absolute;
+            top: 55px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .step-node.active .step-label {
+            color: var(--primary-color);
+        }
+
+        .form-step {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .form-step.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .membership-type-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .type-card {
+            border: 2px solid var(--secondary-color);
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .type-card:hover {
+            border-color: var(--primary-color);
+            background: rgba(220, 84, 36, 0.02);
+            transform: translateY(-2px);
+        }
+
+        .type-card.selected {
+            border-color: var(--primary-color);
+            background: rgba(220, 84, 36, 0.05);
+            box-shadow: 0 6px 15px rgba(220, 84, 36, 0.12);
+        }
+
+        .type-card input[type="radio"] {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            accent-color: var(--primary-color);
+            transform: scale(1.3);
+        }
+
+        .type-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .type-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 1.25rem;
+        }
+
+        .type-card p {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .form-section-title {
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .photo-upload-container {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #fffbfa;
+            border: 2px dashed var(--secondary-color);
+        }
+
+        .photo-preview {
+            width: 80px;
+            height: 90px;
+            background: #eee;
+            border: 2px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: #aaa;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .photo-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-upload-controls {
+            flex-grow: 1;
+        }
+
+        .photo-upload-controls p {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-top: 0.25rem;
+        }
+
+        .btn-add-row {
+            background: var(--white);
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 0.85rem;
+        }
+
+        .btn-add-row:hover {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+
+        .child-row {
+            display: grid;
+            grid-template-columns: 2fr 1.5fr 2fr 1fr;
+            gap: 1rem;
+            align-items: end;
+            padding: 1rem;
+            background: rgba(244, 164, 96, 0.05);
+            border: 1px solid var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+
+        .btn-remove-row {
+            background: #ffebeb;
+            color: #d32f2f;
+            border: 1px solid #ffcdd2;
+            padding: 0.8rem;
+            cursor: pointer;
+            text-align: center;
+            border-radius: 4px;
+        }
+
+        .btn-remove-row:hover {
+            background: #d32f2f;
+            color: var(--white);
+        }
+
+        .guj-input-label {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            font-weight: 500;
+            margin-left: 0.25rem;
+        }
+
+        .wizard-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 2px dashed var(--secondary-color);
+        }
+
+        .review-card {
+            background: #fffcf8;
+            border: 1px solid #ffd8a8;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .review-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .review-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .review-item strong {
+            color: var(--primary-color);
+        }
+
+        /* Print Application Layout CSS (triggered on print) */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+
+            #printable-application, #printable-application * {
+                visibility: visible;
+            }
+
+            #printable-application {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                background: white;
+                color: black;
+                font-family: Arial, sans-serif;
+                font-size: 12px;
+                line-height: 1.4;
+                padding: 20px;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+        }
+
+        /* Success screen modal overlay */
+        .success-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        .success-modal {
+            background: var(--white);
+            border: 4px solid var(--primary-color);
+            padding: 3rem;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: modalScale 0.3s ease;
+        }
+
+        @keyframes modalScale {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            color: #2e7d32;
+            margin-bottom: 1.5rem;
+        }
+
+        .success-modal h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .success-modal p {
+            color: var(--text-color);
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <div id="header"></div>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="container">
+            <h1>Membership Application Form</h1>
+            <p>સભ્યપદ માટેનું આવેદન પત્ર</p>
+        </div>
+    </div>
+
+    <!-- Form Wizard Section -->
+    <div class="container">
+        <div class="wizard-container">
+            <!-- Progress Tracker -->
+            <div class="step-progress">
+                <div class="progress-bar-fill" id="progress-bar"></div>
+                <div class="step-node active" data-step="1">1
+                    <span class="step-label">Member Type</span>
+                </div>
+                <div class="step-node" data-step="2">2
+                    <span class="step-label">Family Details</span>
+                </div>
+                <div class="step-node" data-step="3">3
+                    <span class="step-label">Contact</span>
+                </div>
+                <div class="step-node" data-step="4">4
+                    <span class="step-label">Declaration</span>
+                </div>
+                <div class="step-node" data-step="5">5
+                    <span class="step-label">Review & Submit</span>
+                </div>
+            </div>
+
+            <!-- Form -->
+            <form id="membershipForm" novalidate>
+                <!-- STEP 1: Membership Type & Main Member -->
+                <div class="form-step active" data-step="1">
+                    <h2 class="form-section-title">
+                        Select Membership Type <span class="guj-input-label">(સભ્યપદ નો પ્રકાર)</span>
+                    </h2>
+                    <div class="membership-type-cards">
+                        <div class="type-card selected" onclick="selectMembershipType('individual')">
+                            <input type="radio" id="typeIndividual" name="membership_type" value="individual" checked>
+                            <div class="icon">👤</div>
+                            <h3>Individual Membership</h3>
+                            <p>વ્યક્તિગત સભ્યપદ</p>
+                        </div>
+                        <div class="type-card" onclick="selectMembershipType('family')">
+                            <input type="radio" id="typeFamily" name="membership_type" value="family">
+                            <div class="icon">👨‍👩‍👧‍👦</div>
+                            <h3>Family Membership</h3>
+                            <p>કૌટુંબિક સભ્યપદ</p>
+                        </div>
+                    </div>
+
+                    <h2 class="form-section-title">
+                        Main Applicant Details <span class="guj-input-label">(મુખ્ય વ્યક્તિની વિગતો)</span>
+                    </h2>
+                    <div class="form-group">
+                        <label for="main_name">Full Name * <span class="guj-input-label">(નામ)</span></label>
+                        <input type="text" id="main_name" name="main_name" placeholder="Enter Full Name" required>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label for="main_age">Age * <span class="guj-input-label">(ઉંમર)</span></label>
+                        <input type="number" id="main_age" name="main_age" min="21" placeholder="Must be 21 or older" required>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label>Photograph Upload * <span class="guj-input-label">(મુખ્ય વ્યક્તિનો ફોટો)</span></label>
+                        <div class="photo-upload-container">
+                            <div class="photo-preview" id="main_photo_preview">👤</div>
+                            <div class="photo-upload-controls">
+                                <input type="file" id="main_photo" accept="image/*" required>
+                                <input type="hidden" id="main_photo_data" name="main_photo_data">
+                                <p>Accepted formats: JPG, PNG. Max size: 2MB.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 2: Family & Dependents -->
+                <div class="form-step" data-step="2">
+                    <div id="family-fields" style="display: none;">
+                        <h2 class="form-section-title">
+                            Spouse & Parents Details <span class="guj-input-label">(પત્ની અને માતા-પિતાની વિગતો)</span>
+                        </h2>
+                        
+                        <!-- Wife -->
+                        <div style="background: #fffcf9; padding: 1.5rem; border: 1px solid var(--secondary-color); margin-bottom: 1.5rem;">
+                            <h4>Wife <span class="guj-input-label">(પત્ની)</span></h4>
+                            <div class="form-group" style="margin-top: 1rem;">
+                                <label for="wife_name">Name <span class="guj-input-label">(પત્ની નું નામ)</span></label>
+                                <input type="text" id="wife_name" name="wife_name" placeholder="Spouse Full Name">
+                            </div>
+                            <div class="form-group" style="margin-top: 1rem;">
+                                <label for="wife_age">Age <span class="guj-input-label">(ઉંમર)</span></label>
+                                <input type="number" id="wife_age" name="wife_age" min="18" placeholder="Age">
+                            </div>
+                            <div class="photo-upload-container" style="margin-top: 1rem;">
+                                <div class="photo-preview" id="wife_photo_preview">👤</div>
+                                <div class="photo-upload-controls">
+                                    <input type="file" id="wife_photo" accept="image/*">
+                                    <input type="hidden" id="wife_photo_data" name="wife_photo_data">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Father -->
+                        <div style="background: #fffcf9; padding: 1.5rem; border: 1px solid var(--secondary-color); margin-bottom: 1.5rem;">
+                            <h4>Father <span class="guj-input-label">(પિતા - કુવૈતમાં સાથે રહેતા અને મુખ્ય વ્યક્તિ પર નિર્ભર હોય તો)</span></h4>
+                            <div class="form-group" style="margin-top: 1rem;">
+                                <label for="father_name">Name <span class="guj-input-label">(પિતા નું નામ)</span></label>
+                                <input type="text" id="father_name" name="father_name" placeholder="Father's Full Name">
+                            </div>
+                            <div class="form-group" style="margin-top: 1rem;">
+                                <label for="father_age">Age <span class="guj-input-label">(ઉંમર)</span></label>
+                                <input type="number" id="father_age" name="father_age" min="40" placeholder="Age">
+                            </div>
+                            <div class="photo-upload-container" style="margin-top: 1rem;">
+                                <div class="photo-preview" id="father_photo_preview">👤</div>
+                                <div class="photo-upload-controls">
+                                    <input type="file" id="father_photo" accept="image/*">
+                                    <input type="hidden" id="father_photo_data" name="father_photo_data">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mother -->
+                        <div style="background: #fffcf9; padding: 1.5rem; border: 1px solid var(--secondary-color); margin-bottom: 1.5rem;">
+                            <h4>Mother <span class="guj-input-label">(માતા - કુવૈતમાં સાથે રહેતા અને મુખ્ય વ્યક્તિ પર નિર્ભર હોય તો)</span></h4>
+                            <div class="form-group" style="margin-top: 1rem;">
+                                <label for="mother_name">Name <span class="guj-input-label">(માતા નું નામ)</span></label>
+                                <input type="text" id="mother_name" name="mother_name" placeholder="Mother's Full Name">
+                            </div>
+                            <div class="form-group" style="margin-top: 1rem;">
+                                <label for="mother_age">Age <span class="guj-input-label">(ઉંમર)</span></label>
+                                <input type="number" id="mother_age" name="mother_age" min="40" placeholder="Age">
+                            </div>
+                            <div class="photo-upload-container" style="margin-top: 1rem;">
+                                <div class="photo-preview" id="mother_photo_preview">👤</div>
+                                <div class="photo-upload-controls">
+                                    <input type="file" id="mother_photo" accept="image/*">
+                                    <input type="hidden" id="mother_photo_data" name="mother_photo_data">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Children Grid -->
+                        <h2 class="form-section-title">
+                            Children Details <span class="guj-input-label">(બાળકોની વિગતો - ૨૧ વર્ષથી નીચેના)</span>
+                            <button type="button" class="btn-add-row" onclick="addChildRow()">+ Add Child</button>
+                        </h2>
+                        <div id="children-container">
+                            <!-- Rows added dynamically via JS -->
+                        </div>
+                    </div>
+
+                    <div id="individual-info-alert" style="background: #fff8e1; border-left: 5px solid #ffb300; padding: 1.5rem; margin-bottom: 1.5rem;">
+                        <p style="font-weight: 600; color: #b78103; margin: 0;">
+                            ℹ️ Individual Membership Selected
+                        </p>
+                        <p style="margin: 5px 0 0 0; font-size: 0.9rem; color: #555;">
+                            No family details or children registration are required for Individual Membership. Please click "Next Step" to proceed.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- STEP 3: Contact & Address -->
+                <div class="form-step" data-step="3">
+                    <h2 class="form-section-title">
+                        Address in India/Gujarat <span class="guj-input-label">(ગુજરાત/ભારત - પત્રવ્યવહાર નું સરનામું)</span>
+                    </h2>
+                    <div class="form-group">
+                        <label for="india_address">Full Address * <span class="guj-input-label">(સરનામું)</span></label>
+                        <textarea id="india_address" name="india_address" placeholder="Enter full address in Gujarat/India" required></textarea>
+                    </div>
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label for="india_phone">India Phone * <span class="guj-input-label">(ફોન)</span></label>
+                        <input type="tel" id="india_phone" name="india_phone" placeholder="e.g. +91 98765 43210" required>
+                    </div>
+
+                    <h2 class="form-section-title">
+                        Kuwait Contact Details <span class="guj-input-label">(કુવૈત સંપર્ક વિગતો)</span>
+                    </h2>
+                    <div class="form-group">
+                        <label for="kuwait_mobile">Mobile Number * <span class="guj-input-label">(મોબાઇલ ફોન)</span></label>
+                        <input type="tel" id="kuwait_mobile" name="kuwait_mobile" placeholder="e.g. +965 XXXXXXXX" required>
+                    </div>
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label for="kuwait_home">Home Telephone <span class="guj-input-label">(ઘર ટેલીફોન)</span></label>
+                        <input type="tel" id="kuwait_home" name="kuwait_home" placeholder="e.g. +965 XXXXXXXX">
+                    </div>
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label for="kuwait_office">Office Telephone <span class="guj-input-label">(ઓફિસ ટેલીફોન)</span></label>
+                        <input type="tel" id="kuwait_office" name="kuwait_office" placeholder="e.g. +965 XXXXXXXX">
+                    </div>
+
+                    <h2 class="form-section-title">
+                        Email Address <span class="guj-input-label">(ઈ-મેલ)</span>
+                    </h2>
+                    <div class="form-group">
+                        <label for="email_primary">Primary Email * <span class="guj-input-label">(ઈ-મેલ ૧)</span></label>
+                        <input type="email" id="email_primary" name="email_primary" placeholder="primary@email.com" required>
+                    </div>
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label for="email_secondary">Secondary Email <span class="guj-input-label">(ઈ-મેલ ૨)</span></label>
+                        <input type="email" id="email_secondary" name="email_secondary" placeholder="secondary@email.com">
+                    </div>
+                </div>
+
+                <!-- STEP 4: Origin & Declarations -->
+                <div class="form-step" data-step="4">
+                    <h2 class="form-section-title">
+                        Gujarati Origin Declarations <span class="guj-input-label">(ગુજરાતી મૂળ એકરારનામું)</span>
+                    </h2>
+                    <div class="form-group">
+                        <label for="years_in_gujarat">How many years have you resided in Gujarat? * <span class="guj-input-label">(અમો છેલ્લા ... વર્ષો થી ગુજરાત માં રહીએ છીએ)</span></label>
+                        <input type="number" id="years_in_gujarat" name="years_in_gujarat" min="0" max="100" placeholder="Number of years" required>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 1.5rem; display: flex; gap: 0.8rem; align-items: flex-start;">
+                        <input type="checkbox" id="decl_origin" name="decl_origin" style="margin-top: 5px; transform: scale(1.2); accent-color: var(--primary-color);" required>
+                        <label for="decl_origin" style="font-weight: 500; cursor: pointer;">
+                            We are Gujarati by birth * <br>
+                            <span class="guj-input-label" style="font-size: 0.85rem;">અમો જન્મ જાત ગુજરાતી છીએ</span>
+                        </label>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 1.5rem; display: flex; gap: 0.8rem; align-items: flex-start;">
+                        <input type="checkbox" id="decl_constitution" name="decl_constitution" style="margin-top: 5px; transform: scale(1.2); accent-color: var(--primary-color);" required>
+                        <label for="decl_constitution" style="font-weight: 500; cursor: pointer;">
+                            We accept the Constitution of "Samarpan" and wish to become a member * <br>
+                            <span class="guj-input-label" style="font-size: 0.85rem;">અમો "સમર્પણ" નું બંધારણ માન્ય રાખી સભ્ય થવા ઇચ્છીએ છીએ</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- STEP 5: Recommendations & Review -->
+                <div class="form-step" data-step="5">
+                    <h2 class="form-section-title">
+                        Recommending Members (Mandatory) <span class="guj-input-label">(બે સભ્યો ની ભલામણ - અનિવાર્ય)</span>
+                    </h2>
+                    <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 1.5rem; line-height: 1.5;">
+                        * Must be recommended by two existing members of "Samarpan" who have held membership for at least two years.
+                        <br><span class="guj-input-label">ન્યૂનતમ ૨ વર્ષ જૂના સભ્યોની ભલામણ જરૂરી છે.</span>
+                    </p>
+
+                    <!-- Recommender 1 -->
+                    <div style="background: #fffcf9; padding: 1.5rem; border: 1px solid var(--secondary-color); margin-bottom: 1.5rem;">
+                        <h4>Recommender 1 <span class="guj-input-label">(પ્રથમ ભલામણકર્તા સભ્ય)</span></h4>
+                        <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+                            <div class="form-group">
+                                <label for="rec1_name">Member Name * <span class="guj-input-label">(નામ)</span></label>
+                                <input type="text" id="rec1_name" name="rec1_name" placeholder="Full Name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="rec1_id">Member ID / Code * <span class="guj-input-label">(સભ્ય કોડ)</span></label>
+                                <input type="text" id="rec1_id" name="rec1_id" placeholder="e.g. S-1024" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recommender 2 -->
+                    <div style="background: #fffcf9; padding: 1.5rem; border: 1px solid var(--secondary-color); margin-bottom: 1.5rem;">
+                        <h4>Recommender 2 <span class="guj-input-label">(દ્વિતીય ભલામણકર્તા સભ્ય)</span></h4>
+                        <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+                            <div class="form-group">
+                                <label for="rec2_name">Member Name * <span class="guj-input-label">(નામ)</span></label>
+                                <input type="text" id="rec2_name" name="rec2_name" placeholder="Full Name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="rec2_id">Member ID / Code * <span class="guj-input-label">(સભ્ય કોડ)</span></label>
+                                <input type="text" id="rec2_id" name="rec2_id" placeholder="e.g. S-1456" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h2 class="form-section-title">
+                        Application Summary Review <span class="guj-input-label">(વિગતો ચકાસો)</span>
+                    </h2>
+                    
+                    <div class="review-card" id="form-review-container">
+                        <!-- Summary injected by JS -->
+                    </div>
+
+                    <div class="form-group" style="display: flex; gap: 0.8rem; align-items: flex-start; margin-top: 1.5rem;">
+                        <input type="checkbox" id="signature_confirm" name="signature_confirm" style="margin-top: 5px; transform: scale(1.2); accent-color: var(--primary-color);" required>
+                        <label for="signature_confirm" style="font-weight: bold; cursor: pointer;">
+                            I declare that all details provided above are true, and this serves as my digital signature. *
+                            <br><span class="guj-input-label" style="font-size: 0.85rem; font-weight: normal;">હુ પ્રતિજ્ઞા પૂર્વક એકરાર કરું છુ કે ઉપર દર્શાવેલ વિગતો સાચી છે.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Wizard Actions -->
+                <div class="wizard-buttons">
+                    <button type="button" id="prevBtn" class="btn btn-secondary" style="display: none;" onclick="navigateStep(-1)">← Back</button>
+                    <div style="flex-grow: 1;"></div>
+                    <button type="button" id="nextBtn" class="btn btn-primary" onclick="navigateStep(1)">Next Step →</button>
+                    <button type="submit" id="submitBtn" class="btn btn-primary" style="display: none;">Submit Application 📝</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Screen Overlay -->
+    <div class="success-overlay" id="successOverlay">
+        <div class="success-modal">
+            <div class="success-icon">✓</div>
+            <h2>Application Submitted!</h2>
+            <p>જમા કરવામાં આવ્યું છે</p>
+            <p style="color: var(--text-light); font-size: 0.95rem; line-height: 1.5;">
+                Thank you! Your membership application has been registered successfully. It is now awaiting approval from the Samarpan Executive Committee.
+                <br>
+                You can print or download your filled form as a PDF below.
+            </p>
+            <div class="modal-buttons">
+                <button type="button" class="btn btn-primary" onclick="printApplication()">Print / Save PDF 🖨️</button>
+                <a href="/index.html" class="btn btn-secondary">Back to Home</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Invisible Printing Template matching original PDF layout exactly -->
+    <div id="printable-application" style="display: none;">
+        <!-- Injected via Javascript for printing -->
+    </div>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="/assets/js/join.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#header").load("/components/header.html");
+            $("#footer").load("/components/footer.html");
+        });
+    </script>
+</body>
+
+</html>

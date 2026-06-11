@@ -24,31 +24,37 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <script>
-        var admins = [
-            { username: "admin", password: "samarpan123" },
-            { username: "samarpan", password: "gujarati" },
-            { username: "admin", password: "admin123" }
-        ];
         $("#login-btn").click(function () {
-
             var user = $("#username").val();
             var pass = $("#password").val();
 
-            var authenticated = false;
+            if (!user || !pass) {
+                $("#error").html("Please enter both username and password.");
+                return;
+            }
 
-            for (var i = 0; i < admins.length; i++) {
-                if (admins[i].username === user && admins[i].password === pass) {
-                    authenticated = true;
-                    break;
+            // Secure login via backend API
+            $.ajax({
+                url: '/api/admin/login',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ username: user, password: pass }),
+                success: function (response) {
+                    if (response.success) {
+                        // Redirects to /admin/admin-dashboard.html?user=...
+                        window.location.href = response.redirect;
+                    } else {
+                        $("#error").html(response.message || "Invalid credentials");
+                    }
+                },
+                error: function (xhr) {
+                    var errorMsg = "Invalid username or password";
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        errorMsg = xhr.responseJSON.message;
+                    }
+                    $("#error").html(errorMsg);
                 }
-            }
-
-            if (authenticated) {
-                window.location.href = "/admin/dmin-dashboard.html?user=" + encodeURIComponent(user);
-
-            } else {
-                $("#error").html("Invalid username or password");
-            }
+            });
         });
     </script>
 </body>

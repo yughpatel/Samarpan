@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Join Us - Samarpan Gujarati Cultural Association Kuwait</title>
+    <title>Join the Family - Samarpan Gujarati Cultural Association Kuwait</title>
     <link rel="stylesheet" href="/assets/css/main.css">
     <style>
         /* Form-specific wizard overrides and improvements */
@@ -22,7 +22,7 @@
             display: flex;
             justify-content: space-between;
             position: relative;
-            margin-bottom: 3rem;
+            margin-bottom: 3.5rem;
         }
 
         .step-progress::before {
@@ -81,7 +81,7 @@
         .step-label {
             position: absolute;
             top: 55px;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             font-weight: 700;
             color: var(--text-light);
             text-transform: uppercase;
@@ -162,7 +162,7 @@
         }
 
         .form-section-title {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             color: var(--primary-color);
             border-bottom: 2px solid var(--secondary-color);
             padding-bottom: 0.5rem;
@@ -256,9 +256,9 @@
         }
 
         .guj-input-label {
-            font-size: 0.75rem;
+            font-size: 0.78rem;
             color: var(--text-light);
-            font-weight: 500;
+            font-weight: 600;
             margin-left: 0.25rem;
         }
 
@@ -383,8 +383,8 @@
     <!-- Hero Section -->
     <div class="hero">
         <div class="container">
-            <h1>Membership Application Form</h1>
-            <p>સભ્યપદ માટેનું આવેદન પત્ર</p>
+            <h1>Become a Part of the Samarpan Family</h1>
+            <p>સમર્પણ પરિવારના સભ્ય બનો</p>
         </div>
     </div>
 
@@ -395,19 +395,19 @@
             <div class="step-progress">
                 <div class="progress-bar-fill" id="progress-bar"></div>
                 <div class="step-node active" data-step="1">1
-                    <span class="step-label">Member Type</span>
+                    <span class="step-label">First Step</span>
                 </div>
                 <div class="step-node" data-step="2">2
-                    <span class="step-label">Family Details</span>
+                    <span class="step-label">Your Family</span>
                 </div>
                 <div class="step-node" data-step="3">3
                     <span class="step-label">Contact</span>
                 </div>
                 <div class="step-node" data-step="4">4
-                    <span class="step-label">Declaration</span>
+                    <span class="step-label">Our Heritage</span>
                 </div>
                 <div class="step-node" data-step="5">5
-                    <span class="step-label">Review & Submit</span>
+                    <span class="step-label">Verification</span>
                 </div>
             </div>
 
@@ -416,38 +416,38 @@
                 <!-- STEP 1: Membership Type & Main Member -->
                 <div class="form-step active" data-step="1">
                     <h2 class="form-section-title">
-                        Select Membership Type <span class="guj-input-label">(સભ્યપદ નો પ્રકાર)</span>
+                        How would you like to join? <span class="guj-input-label">(સભ્યપદ નો પ્રકાર)</span>
                     </h2>
                     <div class="membership-type-cards">
                         <div class="type-card selected" onclick="selectMembershipType('individual')">
                             <input type="radio" id="typeIndividual" name="membership_type" value="individual" checked>
                             <div class="icon">👤</div>
-                            <h3>Individual Membership</h3>
+                            <h3>I'm joining as an Individual</h3>
                             <p>વ્યક્તિગત સભ્યપદ</p>
                         </div>
                         <div class="type-card" onclick="selectMembershipType('family')">
                             <input type="radio" id="typeFamily" name="membership_type" value="family">
                             <div class="icon">👨‍👩‍👧‍👦</div>
-                            <h3>Family Membership</h3>
+                            <h3>I'm joining with my Family</h3>
                             <p>કૌટુંબિક સભ્યપદ</p>
                         </div>
                     </div>
 
                     <h2 class="form-section-title">
-                        Main Applicant Details <span class="guj-input-label">(મુખ્ય વ્યક્તિની વિગતો)</span>
+                        Tell us about yourself <span class="guj-input-label">(મુખ્ય સભ્યની વિગતો)</span>
                     </h2>
                     <div class="form-group">
-                        <label for="main_name">Full Name * <span class="guj-input-label">(નામ)</span></label>
-                        <input type="text" id="main_name" name="main_name" placeholder="Enter Full Name" required>
+                        <label for="main_name">Your Full Name * <span class="guj-input-label">(નામ)</span></label>
+                        <input type="text" id="main_name" name="main_name" placeholder="Enter your full name" required>
                     </div>
 
                     <div class="form-group" style="margin-top: 1rem;">
-                        <label for="main_age">Age * <span class="guj-input-label">(ઉંમર)</span></label>
+                        <label for="main_age">Your Age * <span class="guj-input-label">(ઉંમર)</span></label>
                         <input type="number" id="main_age" name="main_age" min="21" placeholder="Must be 21 or older" required>
                     </div>
 
                     <div class="form-group" style="margin-top: 1rem;">
-                        <label>Photograph Upload * <span class="guj-input-label">(મુખ્ય વ્યક્તિનો ફોટો)</span></label>
+                        <label>Your Photograph * <span class="guj-input-label">(મુખ્ય વ્યક્તિનો ફોટો)</span></label>
                         <div class="photo-upload-container">
                             <div class="photo-preview" id="main_photo_preview">👤</div>
                             <div class="photo-upload-controls">
@@ -463,15 +463,15 @@
                 <div class="form-step" data-step="2">
                     <div id="family-fields" style="display: none;">
                         <h2 class="form-section-title">
-                            Spouse & Parents Details <span class="guj-input-label">(પત્ની અને માતા-પિતાની વિગતો)</span>
+                            Spouse & Parents <span class="guj-input-label">(પત્ની અને માતા-પિતાની વિગતો)</span>
                         </h2>
                         
                         <!-- Wife -->
                         <div style="background: #fffcf9; padding: 1.5rem; border: 1px solid var(--secondary-color); margin-bottom: 1.5rem;">
-                            <h4>Wife <span class="guj-input-label">(પત્ની)</span></h4>
+                            <h4>Your Spouse (Wife) <span class="guj-input-label">(પત્ની)</span></h4>
                             <div class="form-group" style="margin-top: 1rem;">
-                                <label for="wife_name">Name <span class="guj-input-label">(પત્ની નું નામ)</span></label>
-                                <input type="text" id="wife_name" name="wife_name" placeholder="Spouse Full Name">
+                                <label for="wife_name">Wife's Full Name <span class="guj-input-label">(પત્ની નું નામ)</span></label>
+                                <input type="text" id="wife_name" name="wife_name" placeholder="Enter wife's name">
                             </div>
                             <div class="form-group" style="margin-top: 1rem;">
                                 <label for="wife_age">Age <span class="guj-input-label">(ઉંમર)</span></label>
@@ -488,10 +488,10 @@
 
                         <!-- Father -->
                         <div style="background: #fffcf9; padding: 1.5rem; border: 1px solid var(--secondary-color); margin-bottom: 1.5rem;">
-                            <h4>Father <span class="guj-input-label">(પિતા - કુવૈતમાં સાથે રહેતા અને મુખ્ય વ્યક્તિ પર નિર્ભર હોય તો)</span></h4>
+                            <h4>Your Father <span class="guj-input-label">(પિતા - કુવૈતમાં સાથે રહેતા અને તમારા પર નિર્ભર હોય તો)</span></h4>
                             <div class="form-group" style="margin-top: 1rem;">
-                                <label for="father_name">Name <span class="guj-input-label">(પિતા નું નામ)</span></label>
-                                <input type="text" id="father_name" name="father_name" placeholder="Father's Full Name">
+                                <label for="father_name">Father's Full Name <span class="guj-input-label">(પિતા નું નામ)</span></label>
+                                <input type="text" id="father_name" name="father_name" placeholder="Enter father's name">
                             </div>
                             <div class="form-group" style="margin-top: 1rem;">
                                 <label for="father_age">Age <span class="guj-input-label">(ઉંમર)</span></label>
@@ -508,10 +508,10 @@
 
                         <!-- Mother -->
                         <div style="background: #fffcf9; padding: 1.5rem; border: 1px solid var(--secondary-color); margin-bottom: 1.5rem;">
-                            <h4>Mother <span class="guj-input-label">(માતા - કુવૈતમાં સાથે રહેતા અને મુખ્ય વ્યક્તિ પર નિર્ભર હોય તો)</span></h4>
+                            <h4>Your Mother <span class="guj-input-label">(માતા - કુવૈતમાં સાથે રહેતા અને તમારા પર નિર્ભર હોય તો)</span></h4>
                             <div class="form-group" style="margin-top: 1rem;">
-                                <label for="mother_name">Name <span class="guj-input-label">(માતા નું નામ)</span></label>
-                                <input type="text" id="mother_name" name="mother_name" placeholder="Mother's Full Name">
+                                <label for="mother_name">Mother's Full Name <span class="guj-input-label">(માતા નું નામ)</span></label>
+                                <input type="text" id="mother_name" name="mother_name" placeholder="Enter mother's name">
                             </div>
                             <div class="form-group" style="margin-top: 1rem;">
                                 <label for="mother_age">Age <span class="guj-input-label">(ઉંમર)</span></label>
@@ -528,7 +528,7 @@
 
                         <!-- Children Grid -->
                         <h2 class="form-section-title">
-                            Children Details <span class="guj-input-label">(બાળકોની વિગતો - ૨૧ વર્ષથી નીચેના)</span>
+                            Your Children <span class="guj-input-label">(બાળકોની વિગતો - ૨૧ વર્ષથી નીચેના)</span>
                             <button type="button" class="btn-add-row" onclick="addChildRow()">+ Add Child</button>
                         </h2>
                         <div id="children-container">
@@ -549,26 +549,26 @@
                 <!-- STEP 3: Contact & Address -->
                 <div class="form-step" data-step="3">
                     <h2 class="form-section-title">
-                        Address in India/Gujarat <span class="guj-input-label">(ગુજરાત/ભારત - પત્રવ્યવહાર નું સરનામું)</span>
+                        Your roots back home <span class="guj-input-label">(ગુજરાત/ભારત - પત્રવ્યવહાર નું સરનામું)</span>
                     </h2>
                     <div class="form-group">
-                        <label for="india_address">Full Address * <span class="guj-input-label">(સરનામું)</span></label>
+                        <label for="india_address">Full Address in India * <span class="guj-input-label">(સરનામું)</span></label>
                         <textarea id="india_address" name="india_address" placeholder="Enter full address in Gujarat/India" required></textarea>
                     </div>
                     <div class="form-group" style="margin-top: 1rem;">
-                        <label for="india_phone">India Phone * <span class="guj-input-label">(ફોન)</span></label>
+                        <label for="india_phone">India Phone Number * <span class="guj-input-label">(ફોન)</span></label>
                         <input type="tel" id="india_phone" name="india_phone" placeholder="e.g. +91 98765 43210" required>
                     </div>
 
                     <h2 class="form-section-title">
-                        Kuwait Contact Details <span class="guj-input-label">(કુવૈત સંપર્ક વિગતો)</span>
+                        Where can we reach you in Kuwait? <span class="guj-input-label">(કુવૈત સંપર્ક વિગતો)</span>
                     </h2>
                     <div class="form-group">
-                        <label for="kuwait_mobile">Mobile Number * <span class="guj-input-label">(મોબાઇલ ફોન)</span></label>
+                        <label for="kuwait_mobile">Kuwait Mobile Number * <span class="guj-input-label">(મોબાઇલ ફોન)</span></label>
                         <input type="tel" id="kuwait_mobile" name="kuwait_mobile" placeholder="e.g. +965 XXXXXXXX" required>
                     </div>
                     <div class="form-group" style="margin-top: 1rem;">
-                        <label for="kuwait_home">Home Telephone <span class="guj-input-label">(ઘર ટેલીફોન)</span></label>
+                        <label for="kuwait_home">Home Landline <span class="guj-input-label">(ઘર ટેલીફોન)</span></label>
                         <input type="tel" id="kuwait_home" name="kuwait_home" placeholder="e.g. +965 XXXXXXXX">
                     </div>
                     <div class="form-group" style="margin-top: 1rem;">
@@ -592,17 +592,17 @@
                 <!-- STEP 4: Origin & Declarations -->
                 <div class="form-step" data-step="4">
                     <h2 class="form-section-title">
-                        Gujarati Origin Declarations <span class="guj-input-label">(ગુજરાતી મૂળ એકરારનામું)</span>
+                        Our Shared Heritage <span class="guj-input-label">(ગુજરાતી મૂળ એકરારનામું)</span>
                     </h2>
                     <div class="form-group">
-                        <label for="years_in_gujarat">How many years have you resided in Gujarat? * <span class="guj-input-label">(અમો છેલ્લા ... વર્ષો થી ગુજરાત માં રહીએ છીએ)</span></label>
+                        <label for="years_in_gujarat">How many years did you reside in Gujarat? * <span class="guj-input-label">(અમો છેલ્લા ... વર્ષો થી ગુજરાત માં રહીએ છીએ)</span></label>
                         <input type="number" id="years_in_gujarat" name="years_in_gujarat" min="0" max="100" placeholder="Number of years" required>
                     </div>
 
                     <div class="form-group" style="margin-top: 1.5rem; display: flex; gap: 0.8rem; align-items: flex-start;">
                         <input type="checkbox" id="decl_origin" name="decl_origin" style="margin-top: 5px; transform: scale(1.2); accent-color: var(--primary-color);" required>
                         <label for="decl_origin" style="font-weight: 500; cursor: pointer;">
-                            We are Gujarati by birth * <br>
+                            We are proudly Gujarati by birth * <br>
                             <span class="guj-input-label" style="font-size: 0.85rem;">અમો જન્મ જાત ગુજરાતી છીએ</span>
                         </label>
                     </div>
@@ -610,7 +610,7 @@
                     <div class="form-group" style="margin-top: 1.5rem; display: flex; gap: 0.8rem; align-items: flex-start;">
                         <input type="checkbox" id="decl_constitution" name="decl_constitution" style="margin-top: 5px; transform: scale(1.2); accent-color: var(--primary-color);" required>
                         <label for="decl_constitution" style="font-weight: 500; cursor: pointer;">
-                            We accept the Constitution of "Samarpan" and wish to become a member * <br>
+                            We happily accept the Constitution of "Samarpan" and wish to become a member * <br>
                             <span class="guj-input-label" style="font-size: 0.85rem;">અમો "સમર્પણ" નું બંધારણ માન્ય રાખી સભ્ય થવા ઇચ્છીએ છીએ</span>
                         </label>
                     </div>
@@ -619,23 +619,23 @@
                 <!-- STEP 5: Recommendations & Review -->
                 <div class="form-step" data-step="5">
                     <h2 class="form-section-title">
-                        Recommending Members (Mandatory) <span class="guj-input-label">(બે સભ્યો ની ભલામણ - અનિવાર્ય)</span>
+                        Community Verification <span class="guj-input-label">(બે સભ્યો ની ભલામણ - અનિવાર્ય)</span>
                     </h2>
                     <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 1.5rem; line-height: 1.5;">
-                        * Must be recommended by two existing members of "Samarpan" who have held membership for at least two years.
-                        <br><span class="guj-input-label">ન્યૂનતમ ૨ વર્ષ જૂના સભ્યોની ભલામણ જરૂરી છે.</span>
+                        To keep our community safe and close-knit, we require recommendation details from two existing members who have been part of the Samarpan family for at least two years.
+                        <br><span class="guj-input-label">ન્યૂનતમ ૨ વર્ષ જૂના સભ્યોની ભલામણ અનિવાર્ય છે.</span>
                     </p>
 
                     <!-- Recommender 1 -->
                     <div style="background: #fffcf9; padding: 1.5rem; border: 1px solid var(--secondary-color); margin-bottom: 1.5rem;">
-                        <h4>Recommender 1 <span class="guj-input-label">(પ્રથમ ભલામણકર્તા સભ્ય)</span></h4>
+                        <h4>First Recommending Member <span class="guj-input-label">(પ્રથમ ભલામણકર્તા સભ્ય)</span></h4>
                         <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
                             <div class="form-group">
-                                <label for="rec1_name">Member Name * <span class="guj-input-label">(નામ)</span></label>
+                                <label for="rec1_name">Member's Name * <span class="guj-input-label">(નામ)</span></label>
                                 <input type="text" id="rec1_name" name="rec1_name" placeholder="Full Name" required>
                             </div>
                             <div class="form-group">
-                                <label for="rec1_id">Member ID / Code * <span class="guj-input-label">(સભ્ય કોડ)</span></label>
+                                <label for="rec1_id">Member's ID / Code * <span class="guj-input-label">(સભ્ય કોડ)</span></label>
                                 <input type="text" id="rec1_id" name="rec1_id" placeholder="e.g. S-1024" required>
                             </div>
                         </div>
@@ -643,21 +643,21 @@
 
                     <!-- Recommender 2 -->
                     <div style="background: #fffcf9; padding: 1.5rem; border: 1px solid var(--secondary-color); margin-bottom: 1.5rem;">
-                        <h4>Recommender 2 <span class="guj-input-label">(દ્વિતીય ભલામણકર્તા સભ્ય)</span></h4>
+                        <h4>Second Recommending Member <span class="guj-input-label">(દ્વિતીય ભલામણકર્તા સભ્ય)</span></h4>
                         <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
                             <div class="form-group">
-                                <label for="rec2_name">Member Name * <span class="guj-input-label">(નામ)</span></label>
+                                <label for="rec2_name">Member's Name * <span class="guj-input-label">(નામ)</span></label>
                                 <input type="text" id="rec2_name" name="rec2_name" placeholder="Full Name" required>
                             </div>
                             <div class="form-group">
-                                <label for="rec2_id">Member ID / Code * <span class="guj-input-label">(સભ્ય કોડ)</span></label>
+                                <label for="rec2_id">Member's ID / Code * <span class="guj-input-label">(સભ્ય કોડ)</span></label>
                                 <input type="text" id="rec2_id" name="rec2_id" placeholder="e.g. S-1456" required>
                             </div>
                         </div>
                     </div>
 
                     <h2 class="form-section-title">
-                        Application Summary Review <span class="guj-input-label">(વિગતો ચકાસો)</span>
+                        Verify Your Information <span class="guj-input-label">(વિગતો ચકાસો)</span>
                     </h2>
                     
                     <div class="review-card" id="form-review-container">
@@ -667,7 +667,7 @@
                     <div class="form-group" style="display: flex; gap: 0.8rem; align-items: flex-start; margin-top: 1.5rem;">
                         <input type="checkbox" id="signature_confirm" name="signature_confirm" style="margin-top: 5px; transform: scale(1.2); accent-color: var(--primary-color);" required>
                         <label for="signature_confirm" style="font-weight: bold; cursor: pointer;">
-                            I declare that all details provided above are true, and this serves as my digital signature. *
+                            I verify that all information shared is correct and this serves as my digital signature. *
                             <br><span class="guj-input-label" style="font-size: 0.85rem; font-weight: normal;">હુ પ્રતિજ્ઞા પૂર્વક એકરાર કરું છુ કે ઉપર દર્શાવેલ વિગતો સાચી છે.</span>
                         </label>
                     </div>
@@ -688,8 +688,8 @@
     <div class="success-overlay" id="successOverlay">
         <div class="success-modal">
             <div class="success-icon">✓</div>
-            <h2>Application Submitted!</h2>
-            <p>જમા કરવામાં આવ્યું છે</p>
+            <h2>Welcome to the Family!</h2>
+            <p>પરિવારમાં આપનું સ્વાગત છે!</p>
             <p style="color: var(--text-light); font-size: 0.95rem; line-height: 1.5;">
                 Thank you! Your membership application has been registered successfully. It is now awaiting approval from the Samarpan Executive Committee.
                 <br>

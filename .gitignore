@@ -12,4 +12,5 @@ samarpan.db
 *.db
 *.sqlite
 backup_original/
+implementation_plan.md
 Samarpan Membership form (1)_220306_215606.pdf

@@ -103,42 +103,70 @@
 
         <h2 class="committee-title">Meet the Committee</h2>
 
-        <div class="committee-grid">
-
-            <div class="committee-member" role="list">
-                <div class="member-photo">👤</div>
-                <h3 class="member-name">Mr. Hiteshkumar S. Patel</h3>
-                <div class="member-role">President</div>
-            </div>
-
-            <div class="committee-member" role="list">
-                <div class="member-photo">👤</div>
-                <h3 class="member-name">Ms. Siddharth Mod</h3>
-                <div class="member-role">General Secretary</div>
-            </div>
-
-            <div class="committee-member" role="list">
-                <div class="member-photo">👤</div>
-                <h3 class="member-name">Mr. Alpitbhai Patel</h3>
-                <div class="member-role">Treasurer</div>
-            </div>
-
-            <div class="committee-member" role="list">
-                <div class="member-photo">👤</div>
-                <h3 class="member-name">Mr. Dipakbhai Parmar </h3>
-                <div class="member-role">Treasurer</div>
-            </div>
-
-            <div class="committee-member" role="list">
-                <div class="member-photo" aria-hidden="true">👤</div>
-                <h3 class="member-name">Vishal R. Patel</h3>
-                <div class="member-role">Coordinator</div>
-            </div>
-
-            <div class="committee-member" role="list">
-                <div class="member-photo" aria-hidden="true">👤</div>
-                <h3 class="member-name">Ketanbhai Patel</h3>
-                <div class="member-role">Coordinator</div>
+        <div class="committee-grid" style="overflow: hidden; width: 100%;">
+            <div class="committee-track">
+                <!-- Original 6 Members -->
+                <div class="committee-member" role="list">
+                    <div class="member-photo">👤</div>
+                    <h3 class="member-name">Mr. Hiteshkumar S. Patel</h3>
+                    <div class="member-role">President</div>
+                </div>
+                <div class="committee-member" role="list">
+                    <div class="member-photo">👤</div>
+                    <h3 class="member-name">Ms. Siddharth Mod</h3>
+                    <div class="member-role">General Secretary</div>
+                </div>
+                <div class="committee-member" role="list">
+                    <div class="member-photo">👤</div>
+                    <h3 class="member-name">Mr. Alpitbhai Patel</h3>
+                    <div class="member-role">Treasurer</div>
+                </div>
+                <div class="committee-member" role="list">
+                    <div class="member-photo">👤</div>
+                    <h3 class="member-name">Mr. Dipakbhai Parmar </h3>
+                    <div class="member-role">Treasurer</div>
+                </div>
+                <div class="committee-member" role="list">
+                    <div class="member-photo" aria-hidden="true">👤</div>
+                    <h3 class="member-name">Vishal R. Patel</h3>
+                    <div class="member-role">Coordinator</div>
+                </div>
+                <div class="committee-member" role="list">
+                    <div class="member-photo" aria-hidden="true">👤</div>
+                    <h3 class="member-name">Ketanbhai Patel</h3>
+                    <div class="member-role">Coordinator</div>
+                </div>
+                <!-- Duplicated 6 Members for Infinite CSS loop -->
+                <div class="committee-member" role="list">
+                    <div class="member-photo">👤</div>
+                    <h3 class="member-name">Mr. Hiteshkumar S. Patel</h3>
+                    <div class="member-role">President</div>
+                </div>
+                <div class="committee-member" role="list">
+                    <div class="member-photo">👤</div>
+                    <h3 class="member-name">Ms. Siddharth Mod</h3>
+                    <div class="member-role">General Secretary</div>
+                </div>
+                <div class="committee-member" role="list">
+                    <div class="member-photo">👤</div>
+                    <h3 class="member-name">Mr. Alpitbhai Patel</h3>
+                    <div class="member-role">Treasurer</div>
+                </div>
+                <div class="committee-member" role="list">
+                    <div class="member-photo">👤</div>
+                    <h3 class="member-name">Mr. Dipakbhai Parmar </h3>
+                    <div class="member-role">Treasurer</div>
+                </div>
+                <div class="committee-member" role="list">
+                    <div class="member-photo" aria-hidden="true">👤</div>
+                    <h3 class="member-name">Vishal R. Patel</h3>
+                    <div class="member-role">Coordinator</div>
+                </div>
+                <div class="committee-member" role="list">
+                    <div class="member-photo" aria-hidden="true">👤</div>
+                    <h3 class="member-name">Ketanbhai Patel</h3>
+                    <div class="member-role">Coordinator</div>
+                </div>
             </div>
         </div>
     </div>
@@ -191,44 +219,6 @@
             $("#header").load("/components/header.html");
             $("#footer").load("/components/footer.html");
         });
-
-        var slider = document.querySelector(".committee-grid");
-        var svalue = 0;
-        var delay = 2000;
-        var slidinginterval;
-
-
-        slider.innerHTML += slider.innerHTML;
-
-        setTimeout(function () {
-
-            slidinginterval = setInterval(function () {
-
-                svalue += 1;
-                slider.scrollLeft = svalue;
-                if (svalue >= slider.scrollWidth / 2) {
-                    svalue = 0;
-                    slider.scrollLeft = 0;
-                }
-            }, 27);
-
-        }, delay);
-
-        slider.addEventListener("mouseenter", function () {
-            clearInterval(slidinginterval);
-        });
-
-        slider.addEventListener("mouseleave", function () {
-            slidinginterval = setInterval(function () {
-
-                svalue += 1;
-                slider.scrollLeft = svalue;
-                if (svalue >= slider.scrollWidth / 2) {
-                    svalue = 0;
-                    slider.scrollLeft = 0;
-                }
-            }, 30);
-        });    
     </script>
 </body>
 

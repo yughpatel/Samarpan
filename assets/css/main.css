@@ -703,16 +703,29 @@ footer {
 }
 
 .committee-grid {
-    display: flex;
-    gap: 25px;
-    overflow-x: hidden;
-    scroll-behavior: nowrap;
-    padding: 10px;
-    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+    padding: 10px 0;
 }
 
-.committee-grid::-webkit-scrollbar {
-    display: none;
+.committee-track {
+    display: flex;
+    gap: 25px;
+    width: max-content;
+    animation: scroll-committee 30s linear infinite;
+}
+
+.committee-track:hover {
+    animation-play-state: paused;
+}
+
+@keyframes scroll-committee {
+    0% {
+        transform: translate3d(0, 0, 0);
+    }
+    100% {
+        transform: translate3d(-50%, 0, 0);
+    }
 }
 
 .committee-member {

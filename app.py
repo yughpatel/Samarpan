@@ -4,26 +4,28 @@ import json
 from flask import Flask, request, jsonify, send_from_directory, session, redirect
 
 app = Flask(__name__, static_folder='', static_url_path='')
+# we encrypt our cookies with this secret key. make sure to configure FLASK_SECRET_KEY in production!
 app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'samarpan_kuwait_secure_secret_key_129837198')
 
 DATABASE = 'samarpan.db'
 
-# Define admin credentials in backend
+# dictionary lookup of admins. in prod, set these through env vars (e.g. ADMIN_PASSWORD) for safety.
 ADMINS = {
-    "admin": "samarpan123",
-    "samarpan": "gujarati",
-    "mainadmin": "admin123"
+    "admin": os.environ.get("ADMIN_PASSWORD", "samarpan123"),
+    "samarpan": os.environ.get("SAMARPAN_PASSWORD", "gujarati"),
+    "mainadmin": os.environ.get("MAINADMIN_PASSWORD", "admin123")
 }
 
+# quick database connection helper. row_factory lets us access columns as dictionary keys which is very handy
 def get_db():
     conn = sqlite3.connect(DATABASE)
     conn.row_factory = sqlite3.Row
     return conn
 
+# database builder. runs once at server startup to build out the schema if SQLite is empty.
 def init_db():
     conn = get_db()
     cursor = conn.cursor()
-    # Create applications table
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS applications (
             id TEXT PRIMARY KEY,
@@ -40,7 +42,7 @@ def init_db():
             mother_name TEXT,
             mother_age TEXT,
             mother_photo TEXT,
-            children TEXT, -- JSON array string
+            children TEXT, -- Stores children rows as a JSON array string
             india_address TEXT NOT NULL,
             india_phone TEXT NOT NULL,
             kuwait_mobile TEXT NOT NULL,
@@ -56,27 +58,27 @@ def init_db():
             submission_date TEXT NOT NULL,
             status TEXT NOT NULL
         )
-    ''');
+    ''')
     conn.commit()
     conn.close()
 
-# Middleware to check if admin is authenticated
+# simple helper to check if this user session is authenticated as admin
 def is_admin_logged_in():
     return session.get('admin_logged_in') == True
 
-# Route: Serves index.html
+# landing page route
 @app.route('/')
 def home():
     return send_from_directory('.', 'index.html')
 
-# Secure Route: Admin Dashboard page (requires session)
+# dashboard panel route. redirects to login page if they are not authenticated.
 @app.route('/admin/admin-dashboard.html')
 def admin_dashboard():
     if not is_admin_logged_in():
         return redirect('/admin/admin-login.html')
     return send_from_directory('admin', 'admin-dashboard.html')
 
-# API Route: Admin Login POST
+# login endpoint: sets admin session cookies on success
 @app.route('/api/admin/login', methods=['POST'])
 def admin_login():
     data = request.json or {}
@@ -90,14 +92,14 @@ def admin_login():
     
     return jsonify({"success": False, "message": "Invalid username or password"}), 401
 
-# API Route: Admin Logout POST
+# logout endpoint: clears session keys and boots the user out
 @app.route('/api/admin/logout', methods=['POST'])
 def admin_logout():
     session.pop('admin_logged_in', None)
     session.pop('admin_user', None)
     return jsonify({"success": True, "redirect": "/admin/admin-login.html"}), 200
 
-# Public Route: Submit Membership Application
+# public wizard form submit route. inserts application fields into sqlite.
 @app.route('/api/applications', methods=['POST'])
 def add_application():
     data = request.json
@@ -178,7 +180,36 @@ def add_application():
     finally:
         conn.close()
 
-# Secure API Route: Get Pending Applications
+# stats metric endpoint to fill dashboard stat cards
+@app.route('/api/admin/stats', methods=['GET'])
+def get_dashboard_stats():
+    if not is_admin_logged_in():
+        return jsonify({"error": "Unauthorized"}), 401
+
+    conn = get_db()
+    cursor = conn.cursor()
+    
+    # lookup approved applications count
+    cursor.execute("SELECT COUNT(*) FROM applications WHERE status = 'Approved'")
+    approved_count = cursor.fetchone()[0]
+    
+    # add these approved ones to their baseline (2547) from the old system
+    total_members = 2547 + approved_count
+    
+    # lookup count of applications waiting for review
+    cursor.execute("SELECT COUNT(*) FROM applications WHERE status = 'Pending'")
+    pending_count = cursor.fetchone()[0]
+    
+    conn.close()
+
+    return jsonify({
+        "total_members": total_members,
+        "pending_applications": pending_count,
+        "upcoming_events": 3,
+        "total_posts": 142
+    }), 200
+
+# fetches all pending applications from sqlite for review
 @app.route('/api/applications', methods=['GET'])
 def get_applications():
     if not is_admin_logged_in():
@@ -241,7 +272,7 @@ def get_applications():
         })
     return jsonify(applications)
 
-# Secure API Route: Approve Application
+# sets application status to 'Approved'
 @app.route('/api/applications/<id>/approve', methods=['POST'])
 def approve_app(id):
     if not is_admin_logged_in():
@@ -258,7 +289,7 @@ def approve_app(id):
     finally:
         conn.close()
 
-# Secure API Route: Reject Application
+# sets application status to 'Rejected'
 @app.route('/api/applications/<id>/reject', methods=['POST'])
 def reject_app(id):
     if not is_admin_logged_in():
@@ -275,16 +306,15 @@ def reject_app(id):
     finally:
         conn.close()
 
-# Route: Serves any static pages/assets (fallback)
+# fallback handler for loading pages & assets. intercepts and locks admin dashboard.
 @app.route('/<path:path>')
 def serve_page(path):
-    # Prevent direct access to admin panel dashboard page statically
     if path == 'admin/admin-dashboard.html':
         return redirect('/admin/admin-login.html')
 
     if os.path.exists(path):
         return send_from_directory('.', path)
-    # Check inside folders
+    # Check inside standard directories
     for folder in ['admin', 'components', 'assets']:
         full_path = os.path.join(folder, path)
         if os.path.exists(full_path):

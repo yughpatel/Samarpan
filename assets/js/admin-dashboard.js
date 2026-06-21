@@ -1,8 +1,8 @@
 $(document).ready(function() {
-    var username = "Admin"; // Default fallback name
-    var currentUrl = window.location.search; // Get query string ?user=...
+    var username = "Admin"; // Fallback username if URL query param is missing
+    var currentUrl = window.location.search; // Grab query string from address bar (e.g. ?user=...)
 
-    // Check if 'user=' exists in the URL
+    // Try to parse out the username to customize the header welcome text
     if (currentUrl.indexOf("user=") > -1) {
         var parts = currentUrl.split("user=");
         if (parts.length > 1) {
@@ -10,18 +10,18 @@ $(document).ready(function() {
         }
     }
 
-    // Update the HTML elements with the found username
+    // Inject the username and its initial into the dashboard UI elements
     $("#userName").text(username);
     $("#userAvatar").text(username.charAt(0).toUpperCase());
     
-    // NAVIGATION: Fix the data-section bug
+    // Switch between dashboard panels (fixed the bug where links used data-target instead of data-section)
     $(".nav-link").click(function(e) {
         e.preventDefault();
 
         $(".nav-link").removeClass("active");
         $(this).addClass("active");
 
-        // Use data-section instead of data-target to match the HTML structure
+        // Show/hide section matching this link's data-section attribute
         var targetSection = $(this).attr("data-section");
 
         $(".section").hide();
@@ -51,7 +51,7 @@ $(document).ready(function() {
         alert("Edit functionality: Opening edit form...") ;
     });
 
-    // Delete Button Handler for static rows
+    // Quick row deletion animation for local tables (e.g. event or settings lists)
     $(".btn-delete").click(function() {
         var verify = confirm("Are you sure you want to delete this item?");
         if (verify) {
@@ -61,23 +61,23 @@ $(document).ready(function() {
         }
     });
 
-    // Add Button Handler
+    // Add item click handler (placeholder alert until full features are wired up)
     $(".btn-add").click(function() {
         alert("Add functionality: Opening creation form...");
     });
 
-    // Form Submit Handler (Settings)
+    // Simple settings saved feedback alert
     $(".btn-submit").click(function() {
         alert("Settings Saved Successfully!");
     });
 
-    // Sidebar Toggle Logic
+    // Responsive sidebar toggle logic
     $("#sidebarToggle").click(function(e) {
         e.stopPropagation();
         $(".sidebar").toggleClass("active");
     });
 
-    // Close sidebar when clicking outside on mobile
+    // Click outside mobile sidebar drawer to close it automatically
     $(document).click(function(e) {
         if ($(window).width() <= 1024) {
             if (!$(e.target).closest('.sidebar').length && !$(e.target).closest('#sidebarToggle').length) {
@@ -86,22 +86,22 @@ $(document).ready(function() {
         }
     });
 
-    // Close sidebar when clicking a nav link on mobile
+    // Dismiss the side drawer on mobile after clicking any menu link
     $(".nav-link").click(function() {
         if ($(window).width() <= 1024) {
             $(".sidebar").removeClass("active");
         }
     });
 
-    // ==========================================
-    // APPLICATIONS SYSTEM (NEW)
-    // ==========================================
+    // --------------------------------------------------
+    // MEMBERSHIP APPLICATION REVIEW SYSTEM
+    // --------------------------------------------------
     let activeApplications = [];
     let currentViewingAppId = null;
 
-    // Load Applications
+    // Grab applications waiting to be processed
     function loadApplications() {
-        // Attempt to fetch from API, fallback to localStorage
+        // Fetch from backend API, or fall back to browser localStorage if working offline
         fetch('/api/applications')
         .then(response => {
             if (response.ok) return response.json();
@@ -118,7 +118,7 @@ $(document).ready(function() {
         });
     }
 
-    // Render Table Rows
+    // Loop through pending applications list and build out the table rows dynamically
     function renderApplicationsTable() {
         const listContainer = $('#applications-list');
         listContainer.empty();
@@ -151,7 +151,7 @@ $(document).ready(function() {
             listContainer.append(row);
         });
 
-        // Attach action handlers
+        // Wire up event click handlers for review, approve, and reject buttons
         $('.btn-review-app').click(function() {
             const appId = $(this).attr('data-id');
             openReviewModal(appId);
@@ -168,7 +168,7 @@ $(document).ready(function() {
         });
     }
 
-    // Open Modal
+    // Populate details panel and open the review overlay modal
     window.openReviewModal = function(id) {
         currentViewingAppId = id;
         const app = activeApplications.find(a => a.id === id);
@@ -275,13 +275,13 @@ $(document).ready(function() {
         $('#reviewModal').css('display', 'flex');
     };
 
-    // Close Modal
+    // Hide details review modal
     window.closeReviewModal = function() {
         $('#reviewModal').hide();
         currentViewingAppId = null;
     };
 
-    // Approve application
+    // Approve handler: updates application state to 'Approved'
     window.approveApplication = function(id) {
         const verify = confirm("Are you sure you want to approve this membership application?");
         if (!verify) return;
@@ -289,7 +289,7 @@ $(document).ready(function() {
         const app = activeApplications.find(a => a.id === id);
         if (!app) return;
 
-        // Perform server request, or client-side mock
+        // POST approval to Flask backend. Falls back to localStorage mock logic on error.
         fetch(`/api/applications/${id}/approve`, {
             method: 'POST'
         })
@@ -301,8 +301,7 @@ $(document).ready(function() {
             completeApprovalFlow(app);
         })
         .catch(() => {
-            // LocalStorage approval fallback
-            // Update status in local applications
+            // Local fallback if server is down: update local status
             activeApplications = activeApplications.map(a => {
                 if (a.id === id) {
                     a.status = 'Approved';
@@ -317,7 +316,7 @@ $(document).ready(function() {
     function completeApprovalFlow(app) {
         alert("Application approved successfully! Member is now registered.");
         
-        // Append approved member to the active members table list dynamically
+        // Append the newly approved member directly to our active members table
         const dateToday = new Date().toISOString().substring(0, 10);
         const newMemberRow = `
             <tr>
@@ -333,14 +332,15 @@ $(document).ready(function() {
                 </td>
             </tr>
         `;
-        // Append to members section table body
+        // Inject into target table body
         $('#members table tbody').prepend(newMemberRow);
 
         closeReviewModal();
         loadApplications(); // Reload applications list
+        loadDashboardStats(); // Reload metrics
     }
 
-    // Reject application
+    // Reject handler: marks application as Rejected
     window.rejectApplication = function(id) {
         const verify = confirm("Are you sure you want to reject this membership application?");
         if (!verify) return;
@@ -356,7 +356,7 @@ $(document).ready(function() {
             completeRejectionFlow(id);
         })
         .catch(() => {
-            // LocalStorage rejection fallback
+            // Offline fallback: delete from local storage array
             activeApplications = activeApplications.filter(a => a.id !== id);
             localStorage.setItem('samarpan_applications', JSON.stringify(activeApplications));
             completeRejectionFlow(id);
@@ -368,9 +368,10 @@ $(document).ready(function() {
         $(`#app_row_${id}`).remove();
         closeReviewModal();
         loadApplications();
+        loadDashboardStats(); // Reload metrics
     }
 
-    // Modal action buttons
+    // Modal actions: button handlers inside the review details panel
     $('#modalApproveBtn').click(function() {
         if (currentViewingAppId) approveApplication(currentViewingAppId);
     });
@@ -379,6 +380,32 @@ $(document).ready(function() {
         if (currentViewingAppId) rejectApplication(currentViewingAppId);
     });
 
-    // Run on startup
+    // Pull stats from stats endpoint to keep cards updated in real time
+    function loadDashboardStats() {
+        $.ajax({
+            url: '/api/admin/stats',
+            type: 'GET',
+            success: function(data) {
+                $('#stat-total-members').text(data.total_members.toLocaleString());
+                $('#stat-pending-apps').text(data.pending_applications.toLocaleString());
+                $('#stat-upcoming-events').text(data.upcoming_events.toLocaleString());
+                $('#stat-gallery-images').text(data.total_posts ? data.total_posts.toLocaleString() : "856");
+            },
+            error: function() {
+                // Fallback stats count from localStorage data
+                const apps = JSON.parse(localStorage.getItem('samarpan_applications') || '[]');
+                const pendingCount = apps.filter(a => a.status === 'Pending').length;
+                const approvedCount = apps.filter(a => a.status === 'Approved').length;
+                
+                $('#stat-total-members').text((2547 + approvedCount).toLocaleString());
+                $('#stat-pending-apps').text(pendingCount.toLocaleString());
+                $('#stat-upcoming-events').text("3");
+                $('#stat-gallery-images').text("856");
+            }
+        });
+    }
+
+    // Run initial loaders on startup
     loadApplications();
+    loadDashboardStats();
 });

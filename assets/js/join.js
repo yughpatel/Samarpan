@@ -2,32 +2,33 @@ let currentStep = 1;
 const totalSteps = 5;
 let childrenCount = 0;
 
-// On document ready
+// wire up file uploads and basic UI states as soon as the DOM finishes loading
 $(document).ready(function () {
-    // Set up photo file readers to save as base64 strings
+    // convert file inputs to base64 strings so they can be sent as JSON and stored directly in sqlite
     setupPhotoUpload('main_photo', 'main_photo_preview', 'main_photo_data');
     setupPhotoUpload('wife_photo', 'wife_photo_preview', 'wife_photo_data');
     setupPhotoUpload('father_photo', 'father_photo_preview', 'father_photo_data');
     setupPhotoUpload('mother_photo', 'mother_photo_preview', 'mother_photo_data');
 
-    // Handle form submit
+    // intercept form submission and route it through our own ajax handler instead of reloading
     $('#membershipForm').on('submit', function (e) {
         e.preventDefault();
         submitApplicationForm();
     });
 
-    // Initialize progress bar
+    // draw the first step of the progress indicator
     updateProgressBar();
 });
 
-// Photo upload utility to convert to base64
+// standard FileReader logic to load image, make sure it is under 2MB, and base64-encode it
 function setupPhotoUpload(inputId, previewId, dataHiddenId) {
     $(`#${inputId}`).on('change', function (e) {
         const file = e.target.files[0];
         if (!file) return;
 
+        // 2MB ceiling. anything larger will bloat the SQLite db pretty fast.
         if (file.size > 2 * 1024 * 1024) {
-            alert("Image size should not exceed 2MB.");
+            alert("Oops! That image is too large. Please upload a photo smaller than 2MB.");
             this.value = '';
             return;
         }
@@ -42,7 +43,7 @@ function setupPhotoUpload(inputId, previewId, dataHiddenId) {
     });
 }
 
-// Select membership type card handler
+// select between individual or family options. switches tabs and handles initial child rows.
 function selectMembershipType(type) {
     $('input[name="membership_type"]').prop('checked', false);
     $(`#type${type.charAt(0).toUpperCase() + type.slice(1)}`).prop('checked', true);
@@ -53,7 +54,7 @@ function selectMembershipType(type) {
     if (type === 'family') {
         $('#family-fields').show();
         $('#individual-info-alert').hide();
-        // Add one initial child row for ease of use
+        // add one child row by default to guide the user visually
         if (childrenCount === 0) {
             addChildRow();
         }
@@ -63,7 +64,7 @@ function selectMembershipType(type) {
     }
 }
 
-// Add child row dynamically
+// append a new dynamic row inside the children form section
 function addChildRow() {
     childrenCount++;
     const childHtml = `
@@ -91,44 +92,44 @@ function addChildRow() {
     $('#children-container').append(childHtml);
 }
 
-// Remove child row
+// remove child row from DOM
 function removeChildRow(id) {
     $(`#child_row_${id}`).remove();
 }
 
-// Navigate step wizard
+// step switcher navigation with step validation checks
 function navigateStep(direction) {
     if (direction === 1 && !validateCurrentStep()) {
-        return; // Stop if current step validation fails
+        return; // stop if validation fails
     }
 
-    // Hide current step
+    // dismiss the active view
     $(`.form-step[data-step="${currentStep}"]`).removeClass('active');
     
-    // Update step count
+    // increment/decrement step with bounds protection
     currentStep += direction;
     if (currentStep < 1) currentStep = 1;
     if (currentStep > totalSteps) currentStep = totalSteps;
 
-    // Show new step
+    // reveal the new target view
     $(`.form-step[data-step="${currentStep}"]`).addClass('active');
 
-    // Update progress bar & buttons
+    // sync wizard steps, nav buttons, and progress line
     updateProgressBar();
     updateWizardButtons();
 
-    // If step is 5 (Review), render the review summary
+    // build the review screen if they reach step 5
     if (currentStep === 5) {
         renderReviewSummary();
     }
 
-    // Scroll back to top of form
+    // scroll up smoothly to the top of the form layout
     $('html, body').animate({
         scrollTop: $('.wizard-container').offset().top - 100
     }, 400);
 }
 
-// Update wizard buttons visibility
+// show or hide prev/next/submit CTA controls based on which step they are viewing
 function updateWizardButtons() {
     if (currentStep === 1) {
         $('#prevBtn').hide();
@@ -145,7 +146,7 @@ function updateWizardButtons() {
     }
 }
 
-// Update step progress bar nodes
+// update the wizard step nodes visually and adjust the connecting line width
 function updateProgressBar() {
     const progressPercent = ((currentStep - 1) / (totalSteps - 1)) * 100;
     $('#progress-bar').css('width', progressPercent + '%');
@@ -162,24 +163,23 @@ function updateProgressBar() {
     });
 }
 
-// Validate fields in the current step
+// checks inputs in the current wizard view before letting them proceed
 function validateCurrentStep() {
     let isValid = true;
     const currentStepContainer = $(`.form-step[data-step="${currentStep}"]`);
     
-    // Select all inputs, textareas, selects inside current step
+    // find all required inputs in the current slide container
     const inputs = currentStepContainer.find('input[required], textarea[required], select[required]');
     
     inputs.each(function () {
-        // Clear previous errors
-        $(this).css('border-color', '');
+        $(this).css('border-color', ''); // clear previous validation styles
         
         if (!this.value || this.value.trim() === '') {
             $(this).css('border-color', 'red');
             isValid = false;
         }
 
-        // Email validation
+        // quick regex validation for email inputs
         if ($(this).attr('type') === 'email' && this.value) {
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(this.value)) {
@@ -188,7 +188,7 @@ function validateCurrentStep() {
             }
         }
 
-        // Checkbox validation
+        // verify user checked required checkboxes (like terms)
         if ($(this).attr('type') === 'checkbox' && !$(this).is(':checked')) {
             $(this).parent().css('color', 'red');
             isValid = false;
@@ -196,11 +196,11 @@ function validateCurrentStep() {
             $(this).parent().css('color', '');
         }
 
-        // Age validation
+        // primary applicant age restriction validation (21+)
         if (this.id === 'main_age' && this.value) {
             const ageVal = parseInt(this.value);
             if (ageVal < 21) {
-                alert("Primary applicant must be 21 years of age or older.");
+                alert("Under our community constitution, the primary applicant must be 21 years of age or older to join.");
                 $(this).css('border-color', 'red');
                 isValid = false;
             }
@@ -208,12 +208,12 @@ function validateCurrentStep() {
     });
 
     if (!isValid) {
-        alert("Please fill in all required fields (*) correctly before proceeding.");
+        alert("Looks like a few details are missing! Please fill in all the required fields (*) to move to the next step.");
     }
     return isValid;
 }
 
-// Compile all form data for review
+// serialize all form input values into a JSON object matching app.py expectations
 function getFormData() {
     const memType = $('input[name="membership_type"]:checked').val();
     const isFamily = memType === 'family';
@@ -254,7 +254,6 @@ function getFormData() {
     };
 
     if (isFamily) {
-        // Collect spouse and parent details
         data.family = {
             wife: {
                 name: $('#wife_name').val() || "N/A",
@@ -274,7 +273,7 @@ function getFormData() {
             children: []
         };
 
-        // Collect children rows
+        // push dynamic children rows into the payload array
         $('#children-container .child-row').each(function () {
             const inputs = $(this).find('input, select');
             data.family.children.push({
@@ -288,7 +287,7 @@ function getFormData() {
     return data;
 }
 
-// Render Review Summary
+// builds review summary layout so the user can verify details before submission
 function renderReviewSummary() {
     const data = getFormData();
     const isFamily = data.membership_type === 'family';
@@ -348,20 +347,20 @@ function renderReviewSummary() {
     $('#form-review-container').html(html);
 }
 
-// Submit form data
+// final submission logic: hits the Flask API endpoint, falls back to localStorage if offline
 function submitApplicationForm() {
     if (!$('#signature_confirm').is(':checked')) {
-        alert("Please confirm the digital signature declaration to submit.");
+        alert("Please check the verification declaration box at the bottom to sign and complete your application.");
         return;
     }
 
     const applicationData = getFormData();
     
-    // Add unique ID and Status
+    // generate a unique ID and initial status for this application
     applicationData.id = "APP_" + Date.now();
     applicationData.status = "Pending";
 
-    // Attempt to submit to backend, otherwise fallback to localStorage
+    // hit Flask backend first, fallback to local storage if server is down
     fetch('/api/applications', {
         method: 'POST',
         headers: {
@@ -386,13 +385,13 @@ function submitApplicationForm() {
     });
 }
 
-// Show success modal
+// triggers success popup modal and builds printable layout in the background
 function showSuccess(data) {
     $('#successOverlay').css('display', 'flex');
     buildPrintableForm(data);
 }
 
-// Build exact copy of the paper form for printing
+// constructs a print layout matching the exact design of the physical PDF application form
 function buildPrintableForm(data) {
     const isFamily = data.membership_type === 'family';
     
@@ -444,7 +443,7 @@ function buildPrintableForm(data) {
             <div style="margin-bottom: 15px; font-size: 13px;">
                 <strong>(ક) સભ્યપદ નો પ્રકાર:</strong> &nbsp;&nbsp;
                 <span style="font-size: 16px;">
-                    ${data.membership_type === 'individual' ? '☑ व्यक्तिगत सभ्यपद (Individual)' : '☐ व्यक्तिगत सभ્યપદ (Individual)'}
+                    ${data.membership_type === 'individual' ? '☑ व्यक्तिगत सभ્યપદ (Individual)' : '☐ व्यक्तिगत સભ્યપદ (Individual)'}
                 </span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <span style="font-size: 16px;">
                     ${data.membership_type === 'family' ? '☑ કૌટુંબિક સભ્યપદ (Family)' : '☐ કૌટુંબિક સભ્યપદ (Family)'}
@@ -584,7 +583,7 @@ function buildPrintableForm(data) {
     $('#printable-application').html(html);
 }
 
-// Print application window
+// open the browser print dialog
 function printApplication() {
     window.print();
 }
